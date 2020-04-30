@@ -1,0 +1,13 @@
+.nav {
+    background-color: black;
+    padding: 1rem;
+}
+
+.nav-item {
+    font-weight: 900;
+    color: white;
+}
+
+.disabled {
+    color: white;
+}
