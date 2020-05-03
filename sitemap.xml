@@ -16,7 +16,29 @@
       
       
 	  <url>
+	    <loc>http://example.org/deepspeech/</loc>
+	    <lastmod>2020-05-03</lastmod>
+        
+
+        
+	  </url>
+	  
+  
+      
+      
+	  <url>
 	    <loc>http://example.org/</loc>
+	    <lastmod>2020-05-03</lastmod>
+        
+
+        
+	  </url>
+	  
+  
+      
+      
+	  <url>
+	    <loc>http://example.org/deepspeech/first/</loc>
 	    <lastmod>2020-05-03</lastmod>
         
 
