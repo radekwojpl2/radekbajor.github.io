@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Addons on JrDevLife</title>
+    <link>http://example.org/addons/</link>
+    <description>Recent content in Addons on JrDevLife</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 03 May 2020 14:52:24 +0200</lastBuildDate>
+    
+	<atom:link href="http://example.org/addons/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>About me</title>
+      <link>http://example.org/author/</link>
+      <pubDate>Sun, 03 May 2020 14:52:24 +0200</pubDate>
+      
+      <guid>http://example.org/author/</guid>
+      <description>Introduction My name is Radek and I am 23 years old with two and a half years of experince in software development.
+Experince  Skills  </description>
+    </item>
+    
+  </channel>
+</rss>
