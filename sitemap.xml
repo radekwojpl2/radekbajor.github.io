@@ -3,6 +3,39 @@
       
       
 	  <url>
+	    <loc>http://example.org/githubpages/github-pages/</loc>
+	    <lastmod>2020-05-04</lastmod>
+        
+
+        
+	  </url>
+	  
+  
+      
+      
+	  <url>
+	    <loc>http://example.org/githubpages/</loc>
+	    <lastmod>2020-05-04</lastmod>
+        
+
+        
+	  </url>
+	  
+  
+      
+      
+	  <url>
+	    <loc>http://example.org/</loc>
+	    <lastmod>2020-05-04</lastmod>
+        
+
+        
+	  </url>
+	  
+  
+      
+      
+	  <url>
 	    <loc>http://example.org/author/</loc>
 	    <lastmod>2020-05-03</lastmod>
         
@@ -17,17 +50,6 @@
       
 	  <url>
 	    <loc>http://example.org/deepspeech/</loc>
-	    <lastmod>2020-05-03</lastmod>
-        
-
-        
-	  </url>
-	  
-  
-      
-      
-	  <url>
-	    <loc>http://example.org/</loc>
 	    <lastmod>2020-05-03</lastmod>
         
 

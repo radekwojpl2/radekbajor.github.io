@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>JrDevLife</title>
-    <link>http://example.org/</link>
-    <description>Recent content on JrDevLife</description>
+    <title>GitHubPages on JrDevLife</title>
+    <link>http://example.org/githubpages/</link>
+    <description>Recent content in GitHubPages on JrDevLife</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 04 May 2020 14:18:13 +0200</lastBuildDate>
     
-	<atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://example.org/githubpages/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -20,25 +20,6 @@
       <description>W tym poście postaram sie przedstawić instrukcje jak stworzyć blog z użyciem Hugo i GitHub Pages.
 Hugo jest to generator statycznych stron internetowych, użycie takiego narzędzia pozwala na szybie dodawanie i edytowanie treści na stronie.
 W połączeniu z GitHub Pages możliwe jest stworzenie strony internetowej w przeciągu 30 minut z darmowym hostingiem, dodatkowym plusem takie strony jest domyślny protokół HTTPS działający z GitHub Pages.</description>
-    </item>
-    
-    <item>
-      <title>About me</title>
-      <link>http://example.org/author/</link>
-      <pubDate>Sun, 03 May 2020 14:52:24 +0200</pubDate>
-      
-      <guid>http://example.org/author/</guid>
-      <description>Introduction My name is Radek and I am 23 years old with two and a half years of experince in software development.
-Experince  Skills  </description>
-    </item>
-    
-    <item>
-      <title>Polish speech recognition with DeepSpeech</title>
-      <link>http://example.org/deepspeech/first/</link>
-      <pubDate>Sun, 03 May 2020 14:52:24 +0200</pubDate>
-      
-      <guid>http://example.org/deepspeech/first/</guid>
-      <description>In progresssd.</description>
     </item>
     
   </channel>
