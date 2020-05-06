@@ -6,10 +6,21 @@
     <description>Recent content on JrDevLife</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 04 May 2020 14:18:13 +0200</lastBuildDate>
+    <lastBuildDate>Tue, 05 May 2020 16:55:02 +0200</lastBuildDate>
     
 	<atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Covid-19 Api</title>
+      <link>http://example.org/covid19project/covid-19-api/</link>
+      <pubDate>Tue, 05 May 2020 16:55:02 +0200</pubDate>
+      
+      <guid>http://example.org/covid19project/covid-19-api/</guid>
+      <description>Na początku tego wpisu postaram sie odpowiedzieć an trzy pytania dotyczące projektu Covid-19 App Co?, Dlaczego? i Jak?
+Co? Po rozmowach z kuzynem, postanowiłem napisać małą aplikacje wyświetlającą wykresy dotyczące statystyk zachorowań na Covid-19.
+Aplikacja będzie obejmować front-end i back-end.</description>
+    </item>
     
     <item>
       <title>Github Pages &#43; Hugo statyczna strona w 30 minut</title>

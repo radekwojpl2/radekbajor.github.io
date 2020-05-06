@@ -3,6 +3,39 @@
       
       
 	  <url>
+	    <loc>http://example.org/covid19project/covid-19-api/</loc>
+	    <lastmod>2020-05-05</lastmod>
+        
+
+        
+	  </url>
+	  
+  
+      
+      
+	  <url>
+	    <loc>http://example.org/covid19project/</loc>
+	    <lastmod>2020-05-05</lastmod>
+        
+
+        
+	  </url>
+	  
+  
+      
+      
+	  <url>
+	    <loc>http://example.org/</loc>
+	    <lastmod>2020-05-05</lastmod>
+        
+
+        
+	  </url>
+	  
+  
+      
+      
+	  <url>
 	    <loc>http://example.org/githubpages/github-pages/</loc>
 	    <lastmod>2020-05-04</lastmod>
         
@@ -15,17 +48,6 @@
       
 	  <url>
 	    <loc>http://example.org/githubpages/</loc>
-	    <lastmod>2020-05-04</lastmod>
-        
-
-        
-	  </url>
-	  
-  
-      
-      
-	  <url>
-	    <loc>http://example.org/</loc>
 	    <lastmod>2020-05-04</lastmod>
         
 
