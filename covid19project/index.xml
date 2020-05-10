@@ -6,10 +6,21 @@
     <description>Recent content in Covid19Project on JrDevLife</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 05 May 2020 16:55:02 +0200</lastBuildDate>
+    <lastBuildDate>Sat, 09 May 2020 16:55:02 +0200</lastBuildDate>
     
 	<atom:link href="http://example.org/covid19project/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Covid-19 CsvParser</title>
+      <link>http://example.org/covid19project/covid-19-csvparser/</link>
+      <pubDate>Sat, 09 May 2020 16:55:02 +0200</pubDate>
+      
+      <guid>http://example.org/covid19project/covid-19-csvparser/</guid>
+      <description>Co? Na potrzeby Api został stworzony konsolowy program mający na celu parsowanie plików csv do JSON.
+Dlaczego? Implementacja parsowania csv została rozdzielona od Api ponieważ:
+ Pozwoli to na lepsze skalowanie, ten proces będzie odpalony tylko raz w przypadku wystąpienie na</description>
+    </item>
     
     <item>
       <title>Covid-19 Api</title>
@@ -17,7 +28,7 @@
       <pubDate>Tue, 05 May 2020 16:55:02 +0200</pubDate>
       
       <guid>http://example.org/covid19project/covid-19-api/</guid>
-      <description>Na początku tego wpisu postaram sie odpowiedzieć an trzy pytania dotyczące projektu Covid-19 App Co?, Dlaczego? i Jak?
+      <description>Na początku tego wpisu postaram sie odpowiedzieć an trzy pytania dotyczące projektu Covid-19 App Co?, Dlaczego? i Jak?hshshhs
 Co? Po rozmowach z kuzynem, postanowiłem napisać małą aplikacje wyświetlającą wykresy dotyczące statystyk zachorowań na Covid-19.
 Aplikacja będzie obejmować front-end i back-end.</description>
     </item>
