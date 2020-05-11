@@ -6,10 +6,22 @@
     <description>Recent content on JrDevLife</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 09 May 2020 16:55:02 +0200</lastBuildDate>
+    <lastBuildDate>Mon, 11 May 2020 15:55:02 +0200</lastBuildDate>
     
 	<atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Covid-19 CsvParser, refactor i testy jednostkowe</title>
+      <link>http://example.org/covid19project/covid-19.csvparser-vol2/</link>
+      <pubDate>Mon, 11 May 2020 15:55:02 +0200</pubDate>
+      
+      <guid>http://example.org/covid19project/covid-19.csvparser-vol2/</guid>
+      <description>Co ? Każdy dobry projekt potrzebuje testów jednostkowych!
+Jak ? Aby dodać testy do projektu CsvParser potrzebne będzie parę modyfikacji. Do implementacji zostanie uzyta biblioteka NUnit.
+Dlaczego ? Testy pozwalają na wprowadzanie zmian z większą pewnością.
+Dodanie solucji i projektu Pierwszą modyfikacją projektu CsvParser jest dodanie pliku .</description>
+    </item>
     
     <item>
       <title>Covid-19 CsvParser</title>

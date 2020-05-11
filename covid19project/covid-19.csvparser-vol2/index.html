@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en-us"><title>
+    Covid-19 CsvParser, refactor i testy jednostkowe | 
+    
+    JrDevLife</title>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<meta name="description" 
+      content="Opis projektu Covid-19 App, Covid19.Api część 3, Testy jednostkowe
+                ">
+
+<link rel="canonical" href="http://example.org/covid19project/covid-19.csvparser-vol2/" />
+
+<link rel="icon" type="image/png" href="http://example.org/image/favicon.ico">
+
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/bulma.min.css">
+
+<meta property="og:title" content="Covid-19 CsvParser, refactor i testy jednostkowe" />
+<meta property="og:description" content="Opis projektu Covid-19 App, Covid19.Api część 3, Testy jednostkowe" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/covid19project/covid-19.csvparser-vol2/" />
+<meta property="article:published_time" content="2020-05-11T15:55:02+02:00" />
+<meta property="article:modified_time" content="2020-05-11T15:55:02+02:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Covid-19 CsvParser, refactor i testy jednostkowe"/>
+<meta name="twitter:description" content="Opis projektu Covid-19 App, Covid19.Api część 3, Testy jednostkowe"/>
+
+
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'analytics-code', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+<script src=/js/ramium.js></script>
+<link rel="stylesheet" href=/css/ramium.css>
+
+
+
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'analytics-code', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<body><nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href=/>
+      
+      <strong>JrDevLife </strong>
+      
+    </a>
+
+    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+      data-target="navbarBasicExample">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <div id="navbarBasicExample" class="navbar-menu">
+    <div class="navbar-start">
+      
+      
+      <a class="navbar-item" href="/">Home</a>
+      
+      
+      
+      <a class="navbar-item" href="/author/">Author</a>
+      
+      
+    </div>
+
+    <div class="navbar-end">
+      
+
+      
+      <div class="navbar-item">
+        <form id="cse-search-box-form-id" onsubmit="return executeQuery();" role="search">
+          <div class="field has-addons">
+            <div class="control is-expanded">
+              <input id="cse-search-input-box-id" size=15 class="input" type="text" autocomplete="off"
+                placeholder="&#xf1a0; Google search" style="font-family:Arial, FontAwesome">
+            </div>
+
+            <div class="control">
+              <button type="submit" class="button is-black">
+                <i class="fa fa-search"></i>
+                </a>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      
+    </div>
+  </div>
+</nav><div class="columns is-centered">
+        <div id="page-body" class="column is-7">
+
+<div class="content blog">
+    <h1 class="title">Covid-19 CsvParser, Refactor I Testy Jednostkowe</h1>
+
+    <div id="infobar" class="level is-mobile">
+        <div class="level-left">
+            
+            <div class="level-item">
+                <p class="subtitle info date">May 11, 2020
+                </p>
+            </div>
+            
+
+            <div class="level-item">
+                <p class="subtitle info">
+                    5 mins read
+                </p>
+            </div>
+        </div>
+        <div class="level-right is-hidden-touch">
+            <div class="tags">
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="tags is-hidden-desktop">
+        
+    </div>
+
+    <div class="blog-text">
+        
+
+        <h2 id="co-">Co ?</h2>
+<p>Każdy dobry projekt potrzebuje testów jednostkowych!</p>
+<h2 id="jak-">Jak ?</h2>
+<p>Aby dodać testy do projektu CsvParser potrzebne będzie parę modyfikacji. Do implementacji zostanie uzyta biblioteka NUnit.</p>
+<h2 id="dlaczego-">Dlaczego ?</h2>
+<p>Testy pozwalają na wprowadzanie zmian z większą pewnością.</p>
+<h3 id="dodanie-solucji-i-projektu">Dodanie solucji i projektu</h3>
+<p>Pierwszą modyfikacją projektu CsvParser jest dodanie pliku .sln. Dodanie plik sln obywa sie poprzez uruchomienie komendy z głównego folderu projektu CsvParser:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">dotnet new sln -n CsvParser
+</code></pre></div><p>Aby zachować porządek można stworzyć nowy folder CsvParser oraz przenieść do niego wszystkie pliki należące do konsolowej aplikacji.
+Następnie należy dodać istniejący projekt do solucji używając komendy:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">dotnet sln add CsvParser/CsvParser.csproj 
+</code></pre></div><p>Kolejnym krokiem będzie stworzenie projektu który będzie zawierać testy dla aplikacji CsvParser, aby to zrobić należy użyć następującej komendy:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">dotnet new nunit CsvParser.Tests
+</code></pre></div><h3 id="refactoring">Refactoring</h3>
+<p>Na potrzeby implementacji testów potrzebny jest factoring klasy CsvProvider. Metody w tej klasie miały za zadanie przeczytanie pliku csv oraz zwrócenie jego zawartości w postaci JSONa. Taka implementacja nie pozwala na łatwą implementacji testów jednostkowych. Problemy były następujące:</p>
+<ol>
+<li>Użyta klasa StreamReader do poprawnego działania potrzebowała zaczytać dane z istniejącego pliku</li>
+<li>Klasa CsvHelper potrzebowała instancji klasy StreamReader do poprawnego działania.</li>
+</ol>
+<p>Aby pozbyć sie tej zależności została dodana nowa klasa z interfejsem. Głównym zadaniem tej klasy jest przeczytanie oraz zwrócenie wszystkich elementów zawartych w pliku csv. Dzięki dodaniu klasy z interfejsem możliwe będzie dodanie odpowiedniej implementacji w projekcie z testami, implementacja ta bedzie zwracać wartości na &ldquo;sztywno&rdquo;, nie będzie potrzebny czytania plików csv.</p>
+<ul>
+<li>Interfejs IReadFileProvider.cs</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C#" data-lang="C#"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> IReadFileProvider
+    {
+        <span style="color:#66d9ef">public</span> IEnumerable&lt;CountriesAggregated&gt; ReadCountriesAggregatedFile(<span style="color:#66d9ef">string</span> pathToFolder);
+        <span style="color:#66d9ef">public</span> IEnumerable&lt;WordWideCases&gt; ReadWorldWideAggregatedFile(<span style="color:#66d9ef">string</span> pathToFolder);
+        <span style="color:#66d9ef">public</span> IEnumerable&lt;KeyCountries&gt; ReadKeyCountriesPivotedFile(<span style="color:#66d9ef">string</span> pathToFolder);
+        <span style="color:#66d9ef">public</span> IEnumerable&lt;TimeSeries19Covid&gt; ReadTimeSeries19CovidCombinedFile(<span style="color:#66d9ef">string</span> pathToFolder);
+    }
+</code></pre></div><ul>
+<li>Klasa ReadFileProvider</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C#" data-lang="C#"> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ReadFileProvider</span> : IReadFileProvider
+    {
+        <span style="color:#66d9ef">public</span> IEnumerable&lt;CountriesAggregated&gt; ReadCountriesAggregatedFile(<span style="color:#66d9ef">string</span> pathToFolder)
+        {
+            <span style="color:#66d9ef">try</span>
+            {
+                <span style="color:#66d9ef">using</span> (<span style="color:#66d9ef">var</span> reader =
+                    <span style="color:#66d9ef">new</span> StreamReader(
+                        Path.Combine(pathToFolder + <span style="color:#e6db74">&#34;/countries-aggregated.csv&#34;</span>)))
+                <span style="color:#66d9ef">using</span> (<span style="color:#66d9ef">var</span> csv = <span style="color:#66d9ef">new</span> CsvReader(reader, CultureInfo.InvariantCulture))
+                {
+                    <span style="color:#66d9ef">var</span> records = csv.GetRecords&lt;CountriesAggregated&gt;();
+
+                    <span style="color:#66d9ef">return</span> records.ToList();
+                }
+            }
+            <span style="color:#66d9ef">catch</span> (Exception e)
+            {
+                Console.WriteLine(<span style="color:#e6db74">&#34;ERROR: Error during CountriesAggregatedFile&#34;</span>);
+                Console.WriteLine(<span style="color:#e6db74">$&#34;EXCEPTION: {e}&#34;</span>);
+                <span style="color:#66d9ef">throw</span>;
+            }
+        }
+    }
+</code></pre></div><p>Dzięki tym zamianą kod w klasie CsvProvider znacząco sie uprościł.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C#" data-lang="C#"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CsvProvider</span> : IFileProvider
+   {
+       <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">readonly</span> IReadFileProvider _readFileProvider;
+
+       <span style="color:#66d9ef">public</span> CsvProvider(IReadFileProvider readFileProvider)
+       {
+           _readFileProvider = readFileProvider;
+       }
+
+       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">string</span> ParseCountriesAggregatedFile(<span style="color:#66d9ef">string</span> pathToFolder)
+       {
+           <span style="color:#66d9ef">try</span>
+           {
+               <span style="color:#66d9ef">var</span> records = _readFileProvider.ReadCountriesAggregatedFile(pathToFolder);
+
+               <span style="color:#66d9ef">return</span> JsonConvert.SerializeObject(records);
+           }
+           <span style="color:#66d9ef">catch</span> (System.Exception exception)
+           {
+               Console.WriteLine(<span style="color:#e6db74">$&#34;ERROR: error during parsing CountriesAggregatedFile&#34;</span>);
+               Console.WriteLine(<span style="color:#e6db74">$&#34;Exception: {exception.Message} / InnerException: {exception.InnerException} &#34;</span>);
+
+               <span style="color:#66d9ef">throw</span>;
+           }
+       }
+   }
+</code></pre></div><h3 id="implementacja-testów">Implementacja testów</h3>
+<p>Przy implementacji zostały użyta następująca konwencja nazewnictwa testów MethodName_StateUnderTest_ExpectedBehavior.</p>
+<p>Testy jednostkowe dla klasy CsvProvider zostały zaimplementowane w następujący sposób:</p>
+<ul>
+<li>Klasa CsvProviderTests.cs</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C#" data-lang="C#"><span style="color:#a6e22e">[TestFixture]</span>
+   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CsvProviderTests</span>
+   {
+       <span style="color:#66d9ef">private</span> IFileProvider _fileProvider;
+<span style="color:#a6e22e">
+</span><span style="color:#a6e22e">       [SetUp]</span>
+       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> Setup()
+       {
+           _fileProvider = <span style="color:#66d9ef">new</span> CsvProvider(<span style="color:#66d9ef">new</span> ReadFileProviderFake());
+       }
+<span style="color:#a6e22e">
+</span><span style="color:#a6e22e">       [Test]</span>
+       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> ParseCountriesAggregatedFile_CorrectListProvided_ShouldReturnCorrectJson()
+       {
+           <span style="color:#66d9ef">var</span> actual = _fileProvider.ParseCountriesAggregatedFile(<span style="color:#e6db74">&#34;/home/test/path&#34;</span>);
+
+           <span style="color:#66d9ef">var</span> expected =
+               <span style="color:#e6db74">&#34;[{\&#34;Date\&#34;:\&#34;2020-09-13T00:00:00\&#34;,\&#34;Country\&#34;:\&#34;Poland\&#34;,\&#34;Confirmed\&#34;:100,\&#34;Recovered\&#34;:90,\&#34;Deaths\&#34;:10}]&#34;</span>;
+
+           Assert.AreEqual(expected, actual);
+       }
+   }
+</code></pre></div><p>Interfejs IReadFileProvider pozwala na stworzenie &ldquo;specjalnej&rdquo; implementacji klasy ReadFileProvider.</p>
+<ul>
+<li>Klasa ReadFileProviderFake.cs</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C#" data-lang="C#"> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ReadFileProviderFake</span> : IReadFileProvider
+   {
+       <span style="color:#66d9ef">public</span> IEnumerable&lt;CountriesAggregated&gt; ReadCountriesAggregatedFile(<span style="color:#66d9ef">string</span> pathToFolder)
+       {
+           <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> List&lt;CountriesAggregated&gt;()
+           {
+               <span style="color:#66d9ef">new</span> CountriesAggregated()
+               {
+                   Confirmed = <span style="color:#ae81ff">100</span>,
+                   Country = <span style="color:#e6db74">&#34;Poland&#34;</span>,
+                   Date = <span style="color:#66d9ef">new</span> DateTime(<span style="color:#ae81ff">2020</span>,<span style="color:#ae81ff">9</span>,<span style="color:#ae81ff">13</span>),
+                   Deaths = <span style="color:#ae81ff">10</span>,
+                   Recovered = <span style="color:#ae81ff">90</span>,
+               }
+           };
+       }
+   }
+</code></pre></div><p><a href="https://github.com/radekwojpl2/Covid19-Api/commit/fc0cd6dff0babad83d22a2578f30ca095d0be7fd">Link</a> do repozytorium.</p>
+
+    </div>
+</div><div id="social-media-share" class="has-text-centered">
+	<p><i>Sharing is caring!</i></p>
+	<br>
+	
+	<div class="share-buttons">
+	    <a  href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fexample.org%2fcovid19project%2fcovid-19.csvparser-vol2%2f"
+	        onclick="socialMediaPopUp(this.href, '', 500, 500); return false;"
+	        title="Share on Facebook. Opens in a new window.">
+	        <img src=/img/icons/45px/facebook.png>
+	    </a>
+
+	    <a  href="https://twitter.com/intent/tweet?text=Covid-19%20CsvParser%2c%20refactor%20i%20testy%20jednostkowe&url=http%3a%2f%2fexample.org%2fcovid19project%2fcovid-19.csvparser-vol2%2f"
+	        onclick="socialMediaPopUp(this.href, '', 500, 500); return false;"
+	        title="Share on Twitter. Opens in a new window." >
+	        <img src=/img/icons/45px/twitter.png>
+	    </a>
+
+		<a  href="http://www.reddit.com/submit?url=http%3a%2f%2fexample.org%2fcovid19project%2fcovid-19.csvparser-vol2%2f"
+	        onclick="socialMediaPopUp(this.href, '', 900, 500); return false;"
+	        title="Share on Reddit. Opens in a new window." >
+	        <img src=/img/icons/45px/reddit.png>
+	    </a>
+
+	    <a  href="http://pinterest.com/pin/create/button/?url=http%3a%2f%2fexample.org%2fcovid19project%2fcovid-19.csvparser-vol2%2f"
+	        onclick="socialMediaPopUp(this.href, '', 900, 500); return false;"
+	        title="Share on Pinterest. Opens in a new window." >
+	        <img src=/img/icons/45px/pinterest.png>
+	    </a>
+
+	    <a  href="http://www.tumblr.com/share/link?url=http%3a%2f%2fexample.org%2fcovid19project%2fcovid-19.csvparser-vol2%2f"
+	        onclick="socialMediaPopUp(this.href, '', 900, 500); return false;"
+	        title="Share on Tumblr. Opens in a new window." >
+	        <img src=/img/icons/45px/tumblr.png>
+	    </a>
+
+		<a  href="https://www.linkedin.com/shareArticle?mini=true&url=http%3a%2f%2fexample.org%2fcovid19project%2fcovid-19.csvparser-vol2%2f
+			&title=Covid-19%20CsvParser%2c%20refactor%20i%20testy%20jednostkowe&summary=Co%20%3f%20Ka%c5%bcdy%20dobry%20projekt%20potrzebuje%20test%c3%b3w%20jednostkowych%21%0aJak%20%3f%20Aby%20doda%c4%87%20testy%20do%20projektu%20CsvParser%20potrzebne%20b%c4%99dzie%20par%c4%99%20modyfikacji.%20Do%20implementacji%20zostanie%20uzyta%20biblioteka%20NUnit.%0aDlaczego%20%3f%20Testy%20pozwalaj%c4%85%20na%20wprowadzanie%20zmian%20z%20wi%c4%99ksz%c4%85%20pewno%c5%9bci%c4%85.%0aDodanie%20solucji%20i%20projektu%20Pierwsz%c4%85%20modyfikacj%c4%85%20projektu%20CsvParser%20jest%20dodanie%20pliku%20.&source=rafed123.github.io"
+	        onclick="socialMediaPopUp(this.href, '', 900, 500); return false;"
+	        title="Share on LinkedIn. Opens in a new window." >
+	        <img src=/img/icons/45px/linkedin.png>
+	    </a>
+
+	    <a  href="mailto:?subject=Covid-19%20CsvParser%2c%20refactor%20i%20testy%20jednostkowe&amp;body=Check out this site http%3a%2f%2fexample.org%2fcovid19project%2fcovid-19.csvparser-vol2%2f"
+	        title="Share via Email. Opens in a new window." >
+	        <img src=/img/icons/45px/mail.png>
+	    </a>
+	</div>
+</div>
+
+
+<br>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    (function () {
+        
+        
+        if (window.location.hostname == "localhost")
+            return;
+
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        var disqus_shortname = 'disqus-code';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+        </div>
+    </div>
+<script async src="https://cse.google.com/cse.js?cx=google-search-code"></script>
+<gcse:searchresults-only></gcse:searchresults-only>
+
+
+<footer class="footer has-background-dark">
+    <div class="content has-text-centered has-text-white">
+        <p>
+            © 2020 Ramium. Powered by
+            <a class="has-text-light" href="https://github.com/gohugoio/hugo" target="_blank">
+            Hugo</a>. Theme
+            <a class="has-text-light" href="https://github.com/rafed123/ramium/" target="_blank">
+                Ramium.
+            </a>
+        </p>
+    </div>
+</footer>
+</body>
+
+</html>
