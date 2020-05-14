@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en-us"><title>
+    Covid-19 Api,Endpoints and Basic Docker Configuration | 
+    
+    JrDevLife</title>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<meta name="description" 
+      content="Opis projektu Covid-19 App, Covid19.Api część 4, Endpointy, oraz Docker
+                ">
+
+<link rel="canonical" href="http://example.org/covid19project/covid-19.api-vol2/" />
+
+<link rel="icon" type="image/png" href="http://example.org/image/favicon.ico">
+
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/bulma.min.css">
+
+<meta property="og:title" content="Covid-19 Api,Endpoints and Basic Docker Configuration" />
+<meta property="og:description" content="Opis projektu Covid-19 App, Covid19.Api część 4, Endpointy, oraz Docker" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/covid19project/covid-19.api-vol2/" />
+<meta property="article:published_time" content="2020-05-14T15:55:02+02:00" />
+<meta property="article:modified_time" content="2020-05-14T15:55:02+02:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Covid-19 Api,Endpoints and Basic Docker Configuration"/>
+<meta name="twitter:description" content="Opis projektu Covid-19 App, Covid19.Api część 4, Endpointy, oraz Docker"/>
+
+
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'analytics-code', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+<script src=/js/ramium.js></script>
+<link rel="stylesheet" href=/css/ramium.css>
+
+
+
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'analytics-code', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<body><nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href=/>
+      
+      <strong>JrDevLife </strong>
+      
+    </a>
+
+    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+      data-target="navbarBasicExample">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <div id="navbarBasicExample" class="navbar-menu">
+    <div class="navbar-start">
+      
+      
+      <a class="navbar-item" href="/">Home</a>
+      
+      
+      
+      <a class="navbar-item" href="/author/">Author</a>
+      
+      
+    </div>
+
+    <div class="navbar-end">
+      
+
+      
+      <div class="navbar-item">
+        <form id="cse-search-box-form-id" onsubmit="return executeQuery();" role="search">
+          <div class="field has-addons">
+            <div class="control is-expanded">
+              <input id="cse-search-input-box-id" size=15 class="input" type="text" autocomplete="off"
+                placeholder="&#xf1a0; Google search" style="font-family:Arial, FontAwesome">
+            </div>
+
+            <div class="control">
+              <button type="submit" class="button is-black">
+                <i class="fa fa-search"></i>
+                </a>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      
+    </div>
+  </div>
+</nav><div class="columns is-centered">
+        <div id="page-body" class="column is-7">
+
+<div class="content blog">
+    <h1 class="title">Covid-19 Api,Endpoints and Basic Docker Configuration</h1>
+
+    <div id="infobar" class="level is-mobile">
+        <div class="level-left">
+            
+            <div class="level-item">
+                <p class="subtitle info date">May 14, 2020
+                </p>
+            </div>
+            
+
+            <div class="level-item">
+                <p class="subtitle info">
+                    7 mins read
+                </p>
+            </div>
+        </div>
+        <div class="level-right is-hidden-touch">
+            <div class="tags">
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="tags is-hidden-desktop">
+        
+    </div>
+
+    <div class="blog-text">
+        
+
+        <h2 id="co">Co?</h2>
+<p>Aby zamknąć pierwszą wersję projektu do zrobienia zostało:</p>
+<ol>
+<li>Dodanie endopoditów pozwalających na otrzymanie danych (w pierwszej wersji 5),</li>
+<li>Konfiguracja dockera lokalnie dla Api,</li>
+<li>Zrobienie Proof of Concept dla Covid19ChartApp,</li>
+<li>Konfiguracja dockera lokalnie dla Covid19ChartApp,</li>
+<li>Udostępnienie stworzonych aplikacji.</li>
+</ol>
+<p>W tym wpisie zostaną przedstawione dwa pierwsze kroki.</p>
+<h2 id="jak">Jak?</h2>
+<p>Krok 1:</p>
+<p>Implementacja endopoditów w Api (zaczynając od repozytorium -&gt; serwisu -&gt; kontrolera).</p>
+<p>Krok 2:</p>
+<p>Konfiguracja dockera dla Covid19-Api.</p>
+<p>Krok 3:</p>
+<p>Implementacja pierwszego wykresu dla Covid19ChartApp, do projektu użyje <a href="https://angular.io/">Angular9</a>. oraz <a href="https://valor-software.com/ng2-charts/">ng2-charts</a> wykorzystującego biblioteka <a href="https://www.chartjs.org/">chart.js</a>.</p>
+<h2 id="dlaczego">Dlaczego?</h2>
+<p>Wydanie działającej wersji pozwoli na poczucie że projekt idzie do przodu, będzie to pierwszy namacalny dowód że aplikacja działa i można ją rozwijać dalej.
+Skonfigurowanie dockera pozwoli mi na poznanie tej technologi z punktu praktycznego.
+Będzie to mój pierwszy własny projekt działający w sieci, może ktoś nawet z niego skorzysta.</p>
+<h2 id="implementacj">Implementacj</h2>
+<p>Przedstawiona implementacja pokaże kroki do wykonania dla jednego z plików csv, reszta implementacji jest analogiczna.</p>
+<h3 id="krok-1">Krok 1</h3>
+<ul>
+<li>Definicja interfejsu repozytorium oraz implementacja dwóch metod w repozytorium.</li>
+</ul>
+<p>Na potrzeby dwóch pierwszy metody zostały dodane 2 dodatkowe modele.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C#" data-lang="C#"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CountriesAggregated</span>
+    {
+         <span style="color:#66d9ef">public</span> DateTime Date { <span style="color:#66d9ef">get</span>; <span style="color:#66d9ef">set</span>; }
+         <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">string</span> Country { <span style="color:#66d9ef">get</span>; <span style="color:#66d9ef">set</span>; }
+         <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> Confirmed { <span style="color:#66d9ef">get</span>; <span style="color:#66d9ef">set</span>; }
+         <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> Recovered { <span style="color:#66d9ef">get</span>; <span style="color:#66d9ef">set</span>; }
+         <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> Deaths { <span style="color:#66d9ef">get</span>; <span style="color:#66d9ef">set</span>; }
+    }
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C#" data-lang="C#"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DateDto</span>
+    {
+
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> Day { <span style="color:#66d9ef">get</span>; <span style="color:#66d9ef">set</span>; }
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> Month { <span style="color:#66d9ef">get</span>; <span style="color:#66d9ef">set</span>; }
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> Year { <span style="color:#66d9ef">get</span>; <span style="color:#66d9ef">set</span>; }
+    }
+</code></pre></div><p>Aby ulepszyć działanie dwóch poniższych metod i umożliwić łatwe testowanie należy przenieść czytanie z pliku do innej klasy.
+Takie rozwiązanie pozwoli na dostarczenie odpowiedniej implementacji w testach.</p>
+<p><strong>WAŻNE</strong> Na potrzeby pierwszej wersji pliki csv zostały dodane do projektu na &ldquo;sztywno&rdquo;. Zostanie to zmienione w przyszłej wersji.
+Z tego powodu ten kawałek kodu czyta pliki csv z lokalizacji z której jest odpalany.(Miejsce gdzie znajduje sie exec lub dll).</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C#" data-lang="C#"><span style="color:#66d9ef">using</span> (StreamReader r = <span style="color:#66d9ef">new</span> StreamReader(Path.Combine(<span style="color:#e6db74">&#34;JsonData/&#34;</span>,<span style="color:#e6db74">&#34;countries-aggregated.json&#34;</span>)))
+</code></pre></div><ol>
+<li>Interfejs ICsvRepository.cs</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C#" data-lang="C#"> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> ICsvRepository
+    {
+        <span style="color:#66d9ef">public</span> IEnumerable&lt;CountriesAggregated&gt; GetAllDataFromCountriesAggregated();
+        <span style="color:#66d9ef">public</span> IEnumerable&lt;CountriesAggregated&gt; GetByDateCountriesAggregated(DateDto dateTime);
+        <span style="color:#66d9ef">public</span> IEnumerable&lt;WordWideCases&gt; GetAllDataFromWorldWideAggregated();
+        <span style="color:#66d9ef">public</span> IEnumerable&lt;KeyCountries&gt; GetAllDataFromKeyCountriesPivoted();
+        <span style="color:#66d9ef">public</span> IEnumerable&lt;TimeSeries19Covid&gt; GetAllDataFromTimeSeries19CovidCombined();
+    }
+</code></pre></div><ol start="2">
+<li>Klasa CsvRepository.cs</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C#" data-lang="C#"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CsvRepository</span> : ICsvRepository
+    {
+        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">readonly</span> ILogger&lt;CsvRepository&gt; _logger;
+        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">readonly</span> IConfiguration _configuration;
+
+        <span style="color:#66d9ef">public</span> CsvRepository(ILogger&lt;CsvRepository&gt; logger, IConfiguration configuration)
+        {
+            _logger = logger;
+            _configuration = configuration;
+        }
+
+        <span style="color:#66d9ef">public</span> IEnumerable&lt;CountriesAggregated&gt; GetAllDataFromCountriesAggregated()
+        {
+            <span style="color:#66d9ef">try</span>
+            {
+
+                <span style="color:#66d9ef">using</span> (StreamReader r =
+                    <span style="color:#66d9ef">new</span> StreamReader(Path.Combine(<span style="color:#e6db74">&#34;JsonData/&#34;</span>,
+                        <span style="color:#e6db74">&#34;countries-aggregated.json&#34;</span>)))
+                {
+                    <span style="color:#66d9ef">string</span> json = r.ReadToEnd();
+                    <span style="color:#66d9ef">var</span> items = JsonConvert.DeserializeObject&lt;List&lt;CountriesAggregated&gt;&gt;(json);
+                    <span style="color:#66d9ef">return</span> items;
+                }
+            }
+            <span style="color:#66d9ef">catch</span> (Exception e)
+            {
+                Console.WriteLine(e);
+                <span style="color:#66d9ef">throw</span>;
+            }
+        }
+
+        <span style="color:#66d9ef">public</span> IEnumerable&lt;CountriesAggregated&gt; GetByDateCountriesAggregated(DateDto dateTime)
+        {
+            <span style="color:#66d9ef">try</span>
+            {
+                <span style="color:#66d9ef">using</span> (StreamReader r =
+                    <span style="color:#66d9ef">new</span> StreamReader(Path.Combine(<span style="color:#e6db74">&#34;JsonData/&#34;</span>,
+                        <span style="color:#e6db74">&#34;countries-aggregated.json&#34;</span>)))
+                {
+                    <span style="color:#66d9ef">string</span> json = r.ReadToEnd();
+                    <span style="color:#66d9ef">var</span> items = JsonConvert.DeserializeObject&lt;List&lt;CountriesAggregated&gt;&gt;(json)
+                        .Where(x =&gt; x.Date.Month == dateTime.Month &amp;&amp; x.Date.Day == dateTime.Day );
+                    <span style="color:#66d9ef">return</span> items;
+                }
+            }
+            <span style="color:#66d9ef">catch</span> (Exception e)
+            {
+                Console.WriteLine(e);
+                <span style="color:#66d9ef">throw</span>;
+            }
+        }
+    }
+</code></pre></div><ul>
+<li>Implementacja interfejsu serwisu oraz klasy</li>
+</ul>
+<ol start="3">
+<li>Interfejs ICsvService.cs</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C#" data-lang="C#"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> ICsvService
+    {
+        <span style="color:#66d9ef">public</span> IEnumerable&lt;CountriesAggregated&gt; GetAllDataFromCountriesAggregated();
+        <span style="color:#66d9ef">public</span> IEnumerable&lt;CountriesAggregated&gt; GetByDateCountriesAggregated(DateDto dateTime);
+        <span style="color:#66d9ef">public</span> IEnumerable&lt;WordWideCases&gt; GetAllDataFromWorldWideAggregated();
+        <span style="color:#66d9ef">public</span> IEnumerable&lt;KeyCountries&gt; GetAllDataFromKeyCountriesPivoted();
+        <span style="color:#66d9ef">public</span> IEnumerable&lt;TimeSeries19Covid&gt; GetAllDataFromTimeSeries19CovidCombined();
+    }
+</code></pre></div><ol start="4">
+<li>Klasa CsvService.cs</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C#" data-lang="C#"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CsvService</span> : ICsvService
+    {
+        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">readonly</span> ICsvRepository _csvRepository;
+
+        <span style="color:#66d9ef">public</span> CsvService(ICsvRepository csvRepository)
+        {
+            _csvRepository = csvRepository;
+        }
+
+
+        <span style="color:#66d9ef">public</span> IEnumerable&lt;CountriesAggregated&gt; GetAllDataFromCountriesAggregated()
+        {
+            <span style="color:#66d9ef">try</span>
+            {
+                <span style="color:#66d9ef">return</span> _csvRepository.GetAllDataFromCountriesAggregated();
+
+            }
+            <span style="color:#66d9ef">catch</span> (Exception e)
+            {
+                Console.WriteLine(e);
+                <span style="color:#66d9ef">throw</span>;
+            }
+        }
+
+        <span style="color:#66d9ef">public</span> IEnumerable&lt;CountriesAggregated&gt; GetByDateCountriesAggregated(DateDto dateTime)
+        {
+            <span style="color:#66d9ef">try</span>
+            {
+                <span style="color:#66d9ef">return</span> _csvRepository.GetByDateCountriesAggregated(dateTime);
+
+            }
+            <span style="color:#66d9ef">catch</span> (Exception e)
+            {
+                Console.WriteLine(e);
+                <span style="color:#66d9ef">throw</span>;
+            }
+        }
+    }
+</code></pre></div><ol start="5">
+<li>CsvController.ts</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C#" data-lang="C#"><span style="color:#a6e22e"> [ApiController]</span>
+<span style="color:#a6e22e">   [Microsoft.AspNetCore.Mvc.Route(&#34;CsvController&#34;)]</span>
+   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CsvController</span> : ControllerBase, ICsvController
+   {
+       <span style="color:#66d9ef">private</span> ICsvService _csvService;
+
+       <span style="color:#66d9ef">public</span> CsvController(
+           ICsvService csvService
+       )
+       {
+           _csvService = csvService;
+       }
+<span style="color:#a6e22e">
+</span><span style="color:#a6e22e">       [HttpGet(&#34;GetAllDataFromCountriesAggregated&#34;)]</span>
+       <span style="color:#66d9ef">public</span> ActionResult&lt;IEnumerable&lt;CountriesAggregated&gt;&gt; GetAllDataFromCountriesAggregated()
+       {
+           <span style="color:#66d9ef">try</span>
+           {
+               <span style="color:#66d9ef">var</span> content = _csvService.GetAllDataFromCountriesAggregated();
+
+               <span style="color:#66d9ef">if</span> (!content.Any())
+               {
+                   <span style="color:#66d9ef">return</span> NoContent() ;
+               }
+
+               <span style="color:#66d9ef">return</span>  Ok(content);
+
+           }
+           <span style="color:#66d9ef">catch</span> (Exception e)
+           {
+               Console.WriteLine(e);
+               <span style="color:#66d9ef">throw</span>;
+           }
+       }
+<span style="color:#a6e22e">
+</span><span style="color:#a6e22e">       [HttpGet(&#34;GetByDateCountriesAggregated&#34;)]</span>
+
+       <span style="color:#66d9ef">public</span> ActionResult&lt;IEnumerable&lt;CountriesAggregated&gt;&gt; GetByDateCountriesAggregated([FromQuery]DateDto dateTime)
+       {
+           <span style="color:#66d9ef">try</span>
+           {
+               <span style="color:#66d9ef">var</span> content = _csvService.GetByDateCountriesAggregated(dateTime);
+
+               <span style="color:#66d9ef">return</span>  Ok(content);
+
+
+           }
+           <span style="color:#66d9ef">catch</span> (Exception e)
+           {
+               Console.WriteLine(e);
+               <span style="color:#66d9ef">return</span> StatusCode(<span style="color:#ae81ff">500</span>);
+           }
+       }
+   }
+</code></pre></div><p>Dodatkowo został dodany i skonfigurowany swagger oraz została dodana obsługa CORS.</p>
+<p>W metodzie ConfigureServices() należy dodać następujący kod:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C#" data-lang="C#">services.AddCors(options =&gt;
+            {
+                options.AddPolicy(<span style="color:#e6db74">&#34;CorsApiPolicy&#34;</span>,
+                    builder =&gt;
+                    {
+                        builder.WithOrigins(<span style="color:#e6db74">&#34;http://localhost:4200&#34;</span>)
+                            .WithHeaders(<span style="color:#66d9ef">new</span>[] { <span style="color:#e6db74">&#34;authorization&#34;</span>, <span style="color:#e6db74">&#34;content-type&#34;</span>, <span style="color:#e6db74">&#34;accept&#34;</span> })
+                            .WithMethods(<span style="color:#66d9ef">new</span>[] { <span style="color:#e6db74">&#34;GET&#34;</span>, <span style="color:#e6db74">&#34;POST&#34;</span>, <span style="color:#e6db74">&#34;PUT&#34;</span>, <span style="color:#e6db74">&#34;DELETE&#34;</span>, <span style="color:#e6db74">&#34;OPTIONS&#34;</span> })
+                            ;
+                    });
+            });
+
+services.AddSwaggerGen(c =&gt; { c.SwaggerDoc(<span style="color:#e6db74">&#34;v1&#34;</span>, <span style="color:#66d9ef">new</span> OpenApiInfo {Title = <span style="color:#e6db74">&#34;My API&#34;</span>, Version = <span style="color:#e6db74">&#34;v1&#34;</span>}); });
+
+</code></pre></div><p>Następująco w metodzie Configure() neleży dodac następujący kod:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C#" data-lang="C#">app.UseSwagger();
+
+app.UseSwaggerUI(c =&gt; { c.SwaggerEndpoint(<span style="color:#e6db74">&#34;/swagger/v1/swagger.json&#34;</span>, <span style="color:#e6db74">&#34;My API V1&#34;</span>); });
+
+app.UseCors(<span style="color:#e6db74">&#34;CorsApiPolicy&#34;</span>);     
+
+</code></pre></div><p>Tak skonfigurowane Api pozwoli na bezproblemowe użycie przez Covid19ChartApp.<br>
+Skonfigurowany swagger pozwoli na szybki dostęp do endpointów.</p>
+<h2 id="konfiguracja-dockera">Konfiguracja dockera</h2>
+<p>Aby zainstalować dockera nalezy w terminalu uzyć komendy:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C#" data-lang="C#">sudo apt-<span style="color:#66d9ef">get</span> install docker
+
+</code></pre></div><p>Konfiguracja dockera odbywa sie poprzez dodanie pliku Dockerfile w projekcie Covid19.Api (bez żadnego rozszerzenia)</p>
+<p>Zawartość pliku Dockerfile:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-m" data-lang="m">FROM mcr.microsoft.com<span style="color:#f92672">/</span>dotnet<span style="color:#f92672">/</span>core<span style="color:#f92672">/</span>aspnet:<span style="color:#ae81ff">3.1</span> AS base
+WORKDIR <span style="color:#f92672">/</span>app
+EXPOSE <span style="color:#ae81ff">80</span>
+
+FROM mcr.microsoft.com<span style="color:#f92672">/</span>dotnet<span style="color:#f92672">/</span>core<span style="color:#f92672">/</span>sdk:<span style="color:#ae81ff">3.1</span> AS build
+WORKDIR <span style="color:#f92672">/</span>src
+COPY [&#34;Covid19Api.csproj&#34;, &#34;<span style="color:#f92672">./</span>&#34;]
+RUN dotnet restore &#34;<span style="color:#f92672">./</span>Covid19Api.csproj&#34;
+COPY . .
+WORKDIR &#34;<span style="color:#f92672">/</span>src<span style="color:#f92672">/</span>.&#34;
+RUN dotnet build &#34;Covid19Api.csproj&#34; <span style="color:#f92672">-</span>c Release <span style="color:#f92672">-</span>o <span style="color:#f92672">/</span>app
+
+FROM build AS publish
+RUN dotnet publish &#34;Covid19Api.csproj&#34; <span style="color:#f92672">-</span>c Release <span style="color:#f92672">-</span>o <span style="color:#f92672">/</span>app
+
+FROM base AS final
+WORKDIR <span style="color:#f92672">/</span>app
+COPY <span style="color:#f92672">--</span>from=publish <span style="color:#f92672">/</span>app .
+ENTRYPOINT [&#34;dotnet&#34;, &#34;Covid19Api.dll&#34;]
+</code></pre></div><p>Następnie należy zbudować kontener komendą:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo docker build -t covidapi:v11 .
+</code></pre></div><p>Jeżeli kontener zbuduje sie poprawnie mozna go uruchomic następującym poleceniem:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo docker run -it --rm -p 8080:80 covidapi:v11
+</code></pre></div><p>Przykłądowy link do wywołania instancji aplikacji Covid19.Api:</p>
+<p>http://localhost:8080/CsvController/GetAllDataFromCountriesAggregated</p>
+<h3 id="przyszłe-ulepszenia">Przyszłe ulepszenia</h3>
+<ol>
+<li>Logowanie do pliku,</li>
+<li>Dodanie dodatkowych endpointów,</li>
+<li>Dodanie bazy danych zamiast plików csv.</li>
+</ol>
+
+    </div>
+</div><div id="social-media-share" class="has-text-centered">
+	<p><i>Sharing is caring!</i></p>
+	<br>
+	
+	<div class="share-buttons">
+	    <a  href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fexample.org%2fcovid19project%2fcovid-19.api-vol2%2f"
+	        onclick="socialMediaPopUp(this.href, '', 500, 500); return false;"
+	        title="Share on Facebook. Opens in a new window.">
+	        <img src=/img/icons/45px/facebook.png>
+	    </a>
+
+	    <a  href="https://twitter.com/intent/tweet?text=Covid-19%20Api%2cEndpoints%20and%20Basic%20Docker%20Configuration&url=http%3a%2f%2fexample.org%2fcovid19project%2fcovid-19.api-vol2%2f"
+	        onclick="socialMediaPopUp(this.href, '', 500, 500); return false;"
+	        title="Share on Twitter. Opens in a new window." >
+	        <img src=/img/icons/45px/twitter.png>
+	    </a>
+
+		<a  href="http://www.reddit.com/submit?url=http%3a%2f%2fexample.org%2fcovid19project%2fcovid-19.api-vol2%2f"
+	        onclick="socialMediaPopUp(this.href, '', 900, 500); return false;"
+	        title="Share on Reddit. Opens in a new window." >
+	        <img src=/img/icons/45px/reddit.png>
+	    </a>
+
+	    <a  href="http://pinterest.com/pin/create/button/?url=http%3a%2f%2fexample.org%2fcovid19project%2fcovid-19.api-vol2%2f"
+	        onclick="socialMediaPopUp(this.href, '', 900, 500); return false;"
+	        title="Share on Pinterest. Opens in a new window." >
+	        <img src=/img/icons/45px/pinterest.png>
+	    </a>
+
+	    <a  href="http://www.tumblr.com/share/link?url=http%3a%2f%2fexample.org%2fcovid19project%2fcovid-19.api-vol2%2f"
+	        onclick="socialMediaPopUp(this.href, '', 900, 500); return false;"
+	        title="Share on Tumblr. Opens in a new window." >
+	        <img src=/img/icons/45px/tumblr.png>
+	    </a>
+
+		<a  href="https://www.linkedin.com/shareArticle?mini=true&url=http%3a%2f%2fexample.org%2fcovid19project%2fcovid-19.api-vol2%2f
+			&title=Covid-19%20Api%2cEndpoints%20and%20Basic%20Docker%20Configuration&summary=Co%3f%20Aby%20zamkn%c4%85%c4%87%20pierwsz%c4%85%20wersj%c4%99%20projektu%20do%20zrobienia%20zosta%c5%82o%3a%0a%20Dodanie%20endopodit%c3%b3w%20pozwalaj%c4%85cych%20na%20otrzymanie%20danych%20%28w%20pierwszej%20wersji%205%29%2c%20Konfiguracja%20dockera%20lokalnie%20dla%20Api%2c%20Zrobienie%20Proof%20of%20Concept%20dla%20Covid19ChartApp%2c%20Konfiguracja%20dockera%20lokalnie%20dla%20Covid19ChartApp%2c%20Udost%c4%99pnienie%20stworzonych%20aplikacji.%20%20W%20tym%20wpisie%20zostan%c4%85%20przedstawione%20dwa%20pierwsze%20kroki.&source=rafed123.github.io"
+	        onclick="socialMediaPopUp(this.href, '', 900, 500); return false;"
+	        title="Share on LinkedIn. Opens in a new window." >
+	        <img src=/img/icons/45px/linkedin.png>
+	    </a>
+
+	    <a  href="mailto:?subject=Covid-19%20Api%2cEndpoints%20and%20Basic%20Docker%20Configuration&amp;body=Check out this site http%3a%2f%2fexample.org%2fcovid19project%2fcovid-19.api-vol2%2f"
+	        title="Share via Email. Opens in a new window." >
+	        <img src=/img/icons/45px/mail.png>
+	    </a>
+	</div>
+</div>
+
+
+<br>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    (function () {
+        
+        
+        if (window.location.hostname == "localhost")
+            return;
+
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        var disqus_shortname = 'disqus-code';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+        </div>
+    </div>
+<script async src="https://cse.google.com/cse.js?cx=google-search-code"></script>
+<gcse:searchresults-only></gcse:searchresults-only>
+
+
+<footer class="footer has-background-dark">
+    <div class="content has-text-centered has-text-white">
+        <p>
+            © 2020 Ramium. Powered by
+            <a class="has-text-light" href="https://github.com/gohugoio/hugo" target="_blank">
+            Hugo</a>. Theme
+            <a class="has-text-light" href="https://github.com/rafed123/ramium/" target="_blank">
+                Ramium.
+            </a>
+        </p>
+    </div>
+</footer>
+</body>
+
+</html>

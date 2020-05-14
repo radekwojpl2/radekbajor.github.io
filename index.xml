@@ -6,10 +6,20 @@
     <description>Recent content on JrDevLife</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 11 May 2020 15:55:02 +0200</lastBuildDate>
+    <lastBuildDate>Thu, 14 May 2020 15:55:02 +0200</lastBuildDate>
     
 	<atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Covid-19 Api,Endpoints and Basic Docker Configuration</title>
+      <link>http://example.org/covid19project/covid-19.api-vol2/</link>
+      <pubDate>Thu, 14 May 2020 15:55:02 +0200</pubDate>
+      
+      <guid>http://example.org/covid19project/covid-19.api-vol2/</guid>
+      <description>Co? Aby zamknąć pierwszą wersję projektu do zrobienia zostało:
+ Dodanie endopoditów pozwalających na otrzymanie danych (w pierwszej wersji 5), Konfiguracja dockera lokalnie dla Api, Zrobienie Proof of Concept dla Covid19ChartApp, Konfiguracja dockera lokalnie dla Covid19ChartApp, Udostępnienie stworzonych aplikacji.  W tym wpisie zostaną przedstawione dwa pierwsze kroki.</description>
+    </item>
     
     <item>
       <title>Covid-19 CsvParser, refactor i testy jednostkowe</title>
