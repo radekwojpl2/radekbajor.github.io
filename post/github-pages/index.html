@@ -1,0 +1,239 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>JrDevLife - Github Pages &#43; Hugo statyczna strona w 30 minut </title>
+    
+    
+    <meta content="JrDevLife" name="keywords">
+    
+    <meta content="JrDevLife - Instrukcja jak krok po kroku postawić działającego bloga z użyciem GitHub Pages i Hugo" name="description">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    
+
+    
+
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=analytics-code"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments)};
+          gtag('js', new Date());
+          gtag('config', 'analytics-code');
+        </script>
+    
+
+    
+    
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+    
+
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/self/css/default.css">
+    <script async src="/layui/layui.js"></script>
+
+    <link rel="stylesheet" async href="/self/css/markdown.min.css">
+    <link rel="stylesheet" async href="/self/css/gallery.css">
+    
+    
+    
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
+    <script async src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.0/lazysizes.min.js" integrity="sha256-h2tMEmhemR2IN4wbbdNjj9LaDIjzwk2hralQwfJmBOE=" crossorigin="anonymous"></script></head>
+
+<body>
+    
+    <header class="layui-header layui-bg-cyan">
+
+    
+    
+    <a class="nav-self-logo" href="/">
+        JrDevLife
+    </a>
+
+    <ul class="layui-nav layui-layout-right layui-bg-cyan" lay-filter="">
+        
+        
+        <li class="layui-nav-item" id="nav_big"><a href="/post/">Posts</a></li>
+        
+
+        
+            
+                <li class="layui-nav-item" id="nav_big"><a href="/">Home</a></li>
+            
+                <li class="layui-nav-item" id="nav_big"><a href="/author/">Author</a></li>
+            
+        
+
+        
+        <li class="layui-nav-item" id="nav_small">
+            <a href="javascript:;">
+                <i class="layui-icon layui-icon-app" style="font-size: 24px;"></i>
+            </a>
+
+            <dl class="layui-nav-child">
+                
+                <dd><a href="/post/">Posts</a></dd>
+                
+
+                
+                    
+                        <dd><a href="/">Home</a></dd>
+                    
+                        <dd><a href="/author/">Author</a></dd>
+                    
+                
+            </dl>
+        </li>
+    </ul>
+</header>
+
+<script>
+layui.use('element', function(){
+  var element = layui.element;
+});
+</script>
+        <div id="content" style="min-height:80%">
+<div class="layui-container" style="margin-bottom: 10px">
+    
+
+    <div class="layui-row layui-col-space10">
+        <div class="layui-col-md12 layui-col-sm12 layui-col-xs12">
+            <div class="layui-card single-card">
+                <br />
+                <blockquote class="self-elem-quote  markdown-body single-title" >
+                    <h1>Github Pages &#43; Hugo statyczna strona w 30 minut</h1>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2020-05-04</span>
+
+    
+    
+
+    
+
+    
+    
+    
+</h3>
+                </blockquote>
+                <div class="layui-card-body markdown-body single-content">
+                    <p>W tym poście postaram sie przedstawić instrukcje jak stworzyć blog z użyciem Hugo i GitHub Pages.<br>
+Hugo jest to generator statycznych stron internetowych, użycie takiego narzędzia pozwala na szybie dodawanie i edytowanie treści na stronie.<br>
+W połączeniu z GitHub Pages możliwe jest stworzenie strony internetowej w przeciągu 30 minut z darmowym hostingiem, dodatkowym plusem takie strony jest domyślny protokół HTTPS działający z GitHub Pages.</p>
+<h2 id="przydatne-linki">Przydatne Linki</h2>
+<p><a href="https://www.digitalocean.com/community/tutorials/how-to-install-git-on-ubuntu-18-04-quickstart">Jak zainstalować Gita</a>.<br>
+<a href="https://github.com/">GitHub</a>.</p>
+<h2 id="wymagania">Wymagania</h2>
+<ul>
+<li>Konto na GitHub</li>
+<li>Zainstalowany Git</li>
+<li>Dowolny system operacyjny (w moim przypadku Ubuntu 18.04),</li>
+<li>Zainstalowany VS Code lub inny edytor.</li>
+<li>Hugo v0.69.2</li>
+</ul>
+<h2 id="instalacja-hugo">Instalacja Hugo</h2>
+<p>Instalacja Hugo odbywa sie poprzez uruchomienie następujących poleceń w terminalu</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">    $ sudo apt-get update
+    $ sudo apt-get install hugo    
+</code></pre></div><p>Do sprawdzenia instalacji można użyć polecenia</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">    $ radek@radek-desktop:~$ hugo version
+    Hugo Static Site Generator v0.69.2 linux/amd64 BuildDate: 2020-04-24T12:36:21Z
+</code></pre></div><h2 id="konfiguracja-github-pages">Konfiguracja GitHub Pages</h2>
+<span id="repo">
+Proces konfigurowania GitHub Pages jest bardzo prosty i znajduje ise po tym linkiem  
+<p><a href="https://pages.github.com">GitHubPages</a></p>
+<h2 id="tworzenie-bloga">Tworzenie bloga</h2>
+<p>Hugo dostarcza gotowe do użycia CLI.
+Aby stworzyć nowy projekt w Hugo należy w terminalu użyć polecenia</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">   $ hugo new site &lt;NazwaProjektu&gt; 
+</code></pre></div><p>Następnie należy przejść do folderu zawierającego stworzony projekt i uruchomić edytor z tego poziomu</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">    $ cd &lt;NazwaProjektu&gt;
+    $ code .
+</code></pre></div><p>Następnie na głównej stronie <a href="https://themes.gohugo.io/tags/blog/" title="Blogi">Hugo Themes</a> możliwie jest wybranie gotowego szablonu strony.</p>
+<p><b>WAŻNE!!</b> Szablony mogą sie od siebie różnić, należ przeczytać dokumentacje jak poprawnie użyć wybranego szablony.</p>
+<p>Na potrzeby tej strony zdecydowałem sie na następujący szablon <a href="https://github.com/rafed/ramium">Ramium</a>. Aby dodać szablon do projektu należy uruchomić</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">    $ git init
+    $ git submodule add https://github.com/rafed/ramium.git themes/ramium
+</code></pre></div><p>Konfiguracja dodanego szablonu odbywa sie poprzez modyfikacje pliku <em>config.toml</em> w głównym folderze projektu. Więcej informacji znajduje sie na stronie szablonu.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-m" data-lang="m">baseURL = &#34;http:<span style="color:#f92672">//</span>example.org<span style="color:#f92672">/</span>&#34;
+#CanonifyURLs=true
+
+languageCode = &#34;en<span style="color:#f92672">-</span>us&#34;
+theme = &#34;ramium&#34;
+
+title = &#34;<span style="color:#f92672">&lt;</span>Nazwa Strony<span style="color:#f92672">&gt;</span>&#34;
+disqusShortname = &#34;disqus<span style="color:#f92672">-</span>code&#34;
+googleAnalytics = &#34;analytics<span style="color:#f92672">-</span>code&#34;
+summaryLength = <span style="color:#ae81ff">40</span>
+pluralizeListTitles = false
+enableemoji = false
+
+[params]
+    description = &#34;A description <span style="color:#66d9ef">for</span> the meta tag of the site&#34;
+    googleSearch = &#34;google<span style="color:#f92672">-</span>search<span style="color:#f92672">-</span>code&#34;
+    showDate = true # make false <span style="color:#66d9ef">if</span> dont want to show date
+    math = false # best to enable this in the front matter of a page
+
+    tagsInHome = <span style="color:#ae81ff">40</span>
+    sectionsInHome = <span style="color:#ae81ff">5</span>
+    paginatePostsPerPage = <span style="color:#ae81ff">5</span>
+    paginateTagsPerPage = <span style="color:#ae81ff">6</span>
+
+[taxonomies]
+    tag = &#34;tags&#34;
+
+[markup.goldmark.renderer]
+    unsafe = true
+
+[menu]
+    [[menu.main]]
+        name = &#34;Home&#34;
+        url = &#34;<span style="color:#f92672">/</span>&#34;
+        weight = <span style="color:#ae81ff">1</span>
+    
+    [[menu.main]]
+        name = &#34;Author&#34;
+        url = &#34;<span style="color:#f92672">/</span>author<span style="color:#f92672">/</span>&#34;
+        weight = <span style="color:#ae81ff">3</span>
+</code></pre></div><p>Po skonfigurowaniu szablonu należy dodać pierwszy post oraz sprawdzić czy strona działa lokalnie. Serwer uruchamia sie lokalnie na domyślnym adresie   <a href="http://localhost:1313/">Serwer lokalny</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">    $ hugo new content/First-Post/first.md
+    $ hugo server -D
+</code></pre></div><p>W lokalizacji <em>./content/First-Post</em> powinien pojawić sie plik o następującej strukturze.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-m" data-lang="m">    <span style="color:#f92672">---</span>
+    title: &#34;Test&#34;
+    date: <span style="color:#ae81ff">2020</span><span style="color:#f92672">-</span><span style="color:#ae81ff">05</span><span style="color:#f92672">-</span><span style="color:#ae81ff">04</span>T16:<span style="color:#ae81ff">10</span>:<span style="color:#ae81ff">17</span><span style="color:#f92672">+</span><span style="color:#ae81ff">02</span>:<span style="color:#ae81ff">00</span>
+    draft: true # flagę draft należy zmienić na false przed zbudowaniem strony
+    <span style="color:#f92672">---</span>
+
+    #Tutaj należy umieścić treść posta, można umieszczać tutaj zwykłego HTML lub znaczniki  Markdown
+
+</code></pre></div><p>Link do <a href="https://wordpress.com/support/markdown-quick-reference/">Markdown</a></p>
+<p>Ostatnim krokiem jest zbudowanie nasze strony oraz  wrzucenie jej do repozytorium stworzonego wcześniej <a href="#repo">Konfiguracja repozytorium</a>.
+Aby to zrobić należy uruchomić następując polecenia w terminalu na poziomie projektu.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">    $ hugo -t ramium <span style="color:#75715e"># po -t powinna pojawić sie nazwa używanego szablonu</span> 
+    $ git submodule add &lt;LinkDoRepozytorium&gt; public
+    $ git add --all
+    $ git commit -m <span style="color:#e6db74">&#34;&lt;Treść commita&gt;&#34;</span>
+    $ git push  
+</code></pre></div><p>Strona powinna znajdować sie po adresem https://&lt;github_username&gt;.github.io/. Należy pamiętać że nie jest to w 100% działający blog, należy dodać do niego obsługę wszystkich stron, skonfigurować wszystkie media społecznościowe i upewnić sie że wszystko działą. Przykładowa budowa strony znajduje sie w folderze <i>themes/ramium/exampleSite</i>.</p>
+</div>
+            </div>
+        </div>
+
+        
+    </div>
+</div>
+
+
+        </div><footer>
+    
+    
+    <div class="layui-container">
+        <p class="copyright">&copy; All rights reserved. Powered by <a href='https://gohugo.io' style='color:#FFFFFF'>Hugo</a> and <a href='https://github.com/ertuil/erblog' style='color:#FFFFFF'>Erblog</a>.</p>
+    </div>
+</footer>
+</body>
+</html>

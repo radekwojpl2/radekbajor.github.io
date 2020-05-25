@@ -1,0 +1,275 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>JrDevLife - Covid-19 CsvParser, refactor i testy jednostkowe </title>
+    
+    
+    <meta content="JrDevLife" name="keywords">
+    
+    <meta content="JrDevLife - Opis projektu Covid-19 App, Covid19.Api część 3, Testy jednostkowe" name="description">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    
+
+    
+
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=analytics-code"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments)};
+          gtag('js', new Date());
+          gtag('config', 'analytics-code');
+        </script>
+    
+
+    
+    
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+    
+
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/self/css/default.css">
+    <script async src="/layui/layui.js"></script>
+
+    <link rel="stylesheet" async href="/self/css/markdown.min.css">
+    <link rel="stylesheet" async href="/self/css/gallery.css">
+    
+    
+    
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
+    <script async src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.0/lazysizes.min.js" integrity="sha256-h2tMEmhemR2IN4wbbdNjj9LaDIjzwk2hralQwfJmBOE=" crossorigin="anonymous"></script></head>
+
+<body>
+    
+    <header class="layui-header layui-bg-cyan">
+
+    
+    
+    <a class="nav-self-logo" href="/">
+        JrDevLife
+    </a>
+
+    <ul class="layui-nav layui-layout-right layui-bg-cyan" lay-filter="">
+        
+        
+        <li class="layui-nav-item" id="nav_big"><a href="/post/">Posts</a></li>
+        
+
+        
+            
+                <li class="layui-nav-item" id="nav_big"><a href="/">Home</a></li>
+            
+                <li class="layui-nav-item" id="nav_big"><a href="/author/">Author</a></li>
+            
+        
+
+        
+        <li class="layui-nav-item" id="nav_small">
+            <a href="javascript:;">
+                <i class="layui-icon layui-icon-app" style="font-size: 24px;"></i>
+            </a>
+
+            <dl class="layui-nav-child">
+                
+                <dd><a href="/post/">Posts</a></dd>
+                
+
+                
+                    
+                        <dd><a href="/">Home</a></dd>
+                    
+                        <dd><a href="/author/">Author</a></dd>
+                    
+                
+            </dl>
+        </li>
+    </ul>
+</header>
+
+<script>
+layui.use('element', function(){
+  var element = layui.element;
+});
+</script>
+        <div id="content" style="min-height:80%">
+<div class="layui-container" style="margin-bottom: 10px">
+    
+
+    <div class="layui-row layui-col-space10">
+        <div class="layui-col-md12 layui-col-sm12 layui-col-xs12">
+            <div class="layui-card single-card">
+                <br />
+                <blockquote class="self-elem-quote  markdown-body single-title" >
+                    <h1>Covid-19 CsvParser, refactor i testy jednostkowe</h1>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2020-05-11</span>
+
+    
+    
+
+    
+
+    
+    
+    
+</h3>
+                </blockquote>
+                <div class="layui-card-body markdown-body single-content">
+                    <h2 id="co-">Co ?</h2>
+<p>Każdy dobry projekt potrzebuje testów jednostkowych!</p>
+<h2 id="jak-">Jak ?</h2>
+<p>Aby dodać testy do projektu CsvParser potrzebne będzie parę modyfikacji. Do implementacji zostanie uzyta biblioteka NUnit.</p>
+<h2 id="dlaczego-">Dlaczego ?</h2>
+<p>Testy pozwalają na wprowadzanie zmian z większą pewnością.</p>
+<h3 id="dodanie-solucji-i-projektu">Dodanie solucji i projektu</h3>
+<p>Pierwszą modyfikacją projektu CsvParser jest dodanie pliku .sln. Dodanie plik sln obywa sie poprzez uruchomienie komendy z głównego folderu projektu CsvParser:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">dotnet new sln -n CsvParser
+</code></pre></div><p>Aby zachować porządek można stworzyć nowy folder CsvParser oraz przenieść do niego wszystkie pliki należące do konsolowej aplikacji.
+Następnie należy dodać istniejący projekt do solucji używając komendy:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">dotnet sln add CsvParser/CsvParser.csproj 
+</code></pre></div><p>Kolejnym krokiem będzie stworzenie projektu który będzie zawierać testy dla aplikacji CsvParser, aby to zrobić należy użyć następującej komendy:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">dotnet new nunit CsvParser.Tests
+</code></pre></div><h3 id="refactoring">Refactoring</h3>
+<p>Na potrzeby implementacji testów potrzebny jest factoring klasy CsvProvider. Metody w tej klasie miały za zadanie przeczytanie pliku csv oraz zwrócenie jego zawartości w postaci JSONa. Taka implementacja nie pozwala na łatwą implementacji testów jednostkowych. Problemy były następujące:</p>
+<ol>
+<li>Użyta klasa StreamReader do poprawnego działania potrzebowała zaczytać dane z istniejącego pliku</li>
+<li>Klasa CsvHelper potrzebowała instancji klasy StreamReader do poprawnego działania.</li>
+</ol>
+<p>Aby pozbyć sie tej zależności została dodana nowa klasa z interfejsem. Głównym zadaniem tej klasy jest przeczytanie oraz zwrócenie wszystkich elementów zawartych w pliku csv. Dzięki dodaniu klasy z interfejsem możliwe będzie dodanie odpowiedniej implementacji w projekcie z testami, implementacja ta bedzie zwracać wartości na &ldquo;sztywno&rdquo;, nie będzie potrzebny czytania plików csv.</p>
+<ul>
+<li>Interfejs IReadFileProvider.cs</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C#" data-lang="C#"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> IReadFileProvider
+    {
+        <span style="color:#66d9ef">public</span> IEnumerable&lt;CountriesAggregated&gt; ReadCountriesAggregatedFile(<span style="color:#66d9ef">string</span> pathToFolder);
+        <span style="color:#66d9ef">public</span> IEnumerable&lt;WordWideCases&gt; ReadWorldWideAggregatedFile(<span style="color:#66d9ef">string</span> pathToFolder);
+        <span style="color:#66d9ef">public</span> IEnumerable&lt;KeyCountries&gt; ReadKeyCountriesPivotedFile(<span style="color:#66d9ef">string</span> pathToFolder);
+        <span style="color:#66d9ef">public</span> IEnumerable&lt;TimeSeries19Covid&gt; ReadTimeSeries19CovidCombinedFile(<span style="color:#66d9ef">string</span> pathToFolder);
+    }
+</code></pre></div><ul>
+<li>Klasa ReadFileProvider</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C#" data-lang="C#"> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ReadFileProvider</span> : IReadFileProvider
+    {
+        <span style="color:#66d9ef">public</span> IEnumerable&lt;CountriesAggregated&gt; ReadCountriesAggregatedFile(<span style="color:#66d9ef">string</span> pathToFolder)
+        {
+            <span style="color:#66d9ef">try</span>
+            {
+                <span style="color:#66d9ef">using</span> (<span style="color:#66d9ef">var</span> reader =
+                    <span style="color:#66d9ef">new</span> StreamReader(
+                        Path.Combine(pathToFolder + <span style="color:#e6db74">&#34;/countries-aggregated.csv&#34;</span>)))
+                <span style="color:#66d9ef">using</span> (<span style="color:#66d9ef">var</span> csv = <span style="color:#66d9ef">new</span> CsvReader(reader, CultureInfo.InvariantCulture))
+                {
+                    <span style="color:#66d9ef">var</span> records = csv.GetRecords&lt;CountriesAggregated&gt;();
+
+                    <span style="color:#66d9ef">return</span> records.ToList();
+                }
+            }
+            <span style="color:#66d9ef">catch</span> (Exception e)
+            {
+                Console.WriteLine(<span style="color:#e6db74">&#34;ERROR: Error during CountriesAggregatedFile&#34;</span>);
+                Console.WriteLine(<span style="color:#e6db74">$&#34;EXCEPTION: {e}&#34;</span>);
+                <span style="color:#66d9ef">throw</span>;
+            }
+        }
+    }
+</code></pre></div><p>Dzięki tym zamianą kod w klasie CsvProvider znacząco sie uprościł.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C#" data-lang="C#"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CsvProvider</span> : IFileProvider
+   {
+       <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">readonly</span> IReadFileProvider _readFileProvider;
+
+       <span style="color:#66d9ef">public</span> CsvProvider(IReadFileProvider readFileProvider)
+       {
+           _readFileProvider = readFileProvider;
+       }
+
+       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">string</span> ParseCountriesAggregatedFile(<span style="color:#66d9ef">string</span> pathToFolder)
+       {
+           <span style="color:#66d9ef">try</span>
+           {
+               <span style="color:#66d9ef">var</span> records = _readFileProvider.ReadCountriesAggregatedFile(pathToFolder);
+
+               <span style="color:#66d9ef">return</span> JsonConvert.SerializeObject(records);
+           }
+           <span style="color:#66d9ef">catch</span> (System.Exception exception)
+           {
+               Console.WriteLine(<span style="color:#e6db74">$&#34;ERROR: error during parsing CountriesAggregatedFile&#34;</span>);
+               Console.WriteLine(<span style="color:#e6db74">$&#34;Exception: {exception.Message} / InnerException: {exception.InnerException} &#34;</span>);
+
+               <span style="color:#66d9ef">throw</span>;
+           }
+       }
+   }
+</code></pre></div><h3 id="implementacja-testów">Implementacja testów</h3>
+<p>Przy implementacji zostały użyta następująca konwencja nazewnictwa testów MethodName_StateUnderTest_ExpectedBehavior.</p>
+<p>Testy jednostkowe dla klasy CsvProvider zostały zaimplementowane w następujący sposób:</p>
+<ul>
+<li>Klasa CsvProviderTests.cs</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C#" data-lang="C#"><span style="color:#a6e22e">[TestFixture]</span>
+   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CsvProviderTests</span>
+   {
+       <span style="color:#66d9ef">private</span> IFileProvider _fileProvider;
+<span style="color:#a6e22e">
+</span><span style="color:#a6e22e">       [SetUp]</span>
+       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> Setup()
+       {
+           _fileProvider = <span style="color:#66d9ef">new</span> CsvProvider(<span style="color:#66d9ef">new</span> ReadFileProviderFake());
+       }
+<span style="color:#a6e22e">
+</span><span style="color:#a6e22e">       [Test]</span>
+       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> ParseCountriesAggregatedFile_CorrectListProvided_ShouldReturnCorrectJson()
+       {
+           <span style="color:#66d9ef">var</span> actual = _fileProvider.ParseCountriesAggregatedFile(<span style="color:#e6db74">&#34;/home/test/path&#34;</span>);
+
+           <span style="color:#66d9ef">var</span> expected =
+               <span style="color:#e6db74">&#34;[{\&#34;Date\&#34;:\&#34;2020-09-13T00:00:00\&#34;,\&#34;Country\&#34;:\&#34;Poland\&#34;,\&#34;Confirmed\&#34;:100,\&#34;Recovered\&#34;:90,\&#34;Deaths\&#34;:10}]&#34;</span>;
+
+           Assert.AreEqual(expected, actual);
+       }
+   }
+</code></pre></div><p>Interfejs IReadFileProvider pozwala na stworzenie &ldquo;specjalnej&rdquo; implementacji klasy ReadFileProvider.</p>
+<ul>
+<li>Klasa ReadFileProviderFake.cs</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C#" data-lang="C#"> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ReadFileProviderFake</span> : IReadFileProvider
+   {
+       <span style="color:#66d9ef">public</span> IEnumerable&lt;CountriesAggregated&gt; ReadCountriesAggregatedFile(<span style="color:#66d9ef">string</span> pathToFolder)
+       {
+           <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> List&lt;CountriesAggregated&gt;()
+           {
+               <span style="color:#66d9ef">new</span> CountriesAggregated()
+               {
+                   Confirmed = <span style="color:#ae81ff">100</span>,
+                   Country = <span style="color:#e6db74">&#34;Poland&#34;</span>,
+                   Date = <span style="color:#66d9ef">new</span> DateTime(<span style="color:#ae81ff">2020</span>,<span style="color:#ae81ff">9</span>,<span style="color:#ae81ff">13</span>),
+                   Deaths = <span style="color:#ae81ff">10</span>,
+                   Recovered = <span style="color:#ae81ff">90</span>,
+               }
+           };
+       }
+   }
+</code></pre></div><p><a href="https://github.com/radekwojpl2/Covid19-Api/commit/fc0cd6dff0babad83d22a2578f30ca095d0be7fd">Link</a> do repozytorium.</p>
+</div>
+            </div>
+        </div>
+
+        
+    </div>
+</div>
+
+
+        </div><footer>
+    
+    
+    <div class="layui-container">
+        <p class="copyright">&copy; All rights reserved. Powered by <a href='https://gohugo.io' style='color:#FFFFFF'>Hugo</a> and <a href='https://github.com/ertuil/erblog' style='color:#FFFFFF'>Erblog</a>.</p>
+    </div>
+</footer>
+</body>
+</html>

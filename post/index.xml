@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Post on JrDevLife</title>
+    <link>http://example.org/post/</link>
+    <description>Recent content in Post on JrDevLife</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 25 May 2020 16:55:02 +0200</lastBuildDate>
+    
+	<atom:link href="http://example.org/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Covid-19 ChartApp, Angular and Basic Docker Configuration</title>
+      <link>http://example.org/post/covid-19-chartapp/</link>
+      <pubDate>Mon, 25 May 2020 16:55:02 +0200</pubDate>
+      
+      <guid>http://example.org/post/covid-19-chartapp/</guid>
+      <description>Co? Do projekty Covid19 dołączy aplikacja kliencka pozwalająca na wyświetlanie wykresów. W pierwszej wersji dostępny będzie jeden wykres przedstawiający sumaryczne ilości śmierci, wyzdrowień oraz wystąpień wirusa. Zostaną obsłużone 3 kraje: Polska, Włochy i Azerbejdżan.
+Jak? Aby to osiągnąć zostanie użyty Framework Angular w wersji 9, Angular Material oraz biblioteka ng2-charts.</description>
+    </item>
+    
+    <item>
+      <title>Covid-19 Api,Endpoints and Basic Docker Configuration</title>
+      <link>http://example.org/post/covid-19.api-vol2/</link>
+      <pubDate>Thu, 14 May 2020 15:55:02 +0200</pubDate>
+      
+      <guid>http://example.org/post/covid-19.api-vol2/</guid>
+      <description>Co? Aby zamknąć pierwszą wersję projektu do zrobienia zostało:
+ Dodanie endopoditów pozwalających na otrzymanie danych (w pierwszej wersji 5), Konfiguracja dockera lokalnie dla Api, Zrobienie Proof of Concept dla Covid19ChartApp, Konfiguracja dockera lokalnie dla Covid19ChartApp, Udostępnienie stworzonych aplikacji.  W tym wpisie zostaną przedstawione dwa pierwsze kroki.</description>
+    </item>
+    
+    <item>
+      <title>Covid-19 CsvParser, refactor i testy jednostkowe</title>
+      <link>http://example.org/post/covid-19.csvparser-vol2/</link>
+      <pubDate>Mon, 11 May 2020 15:55:02 +0200</pubDate>
+      
+      <guid>http://example.org/post/covid-19.csvparser-vol2/</guid>
+      <description>Co ? Każdy dobry projekt potrzebuje testów jednostkowych!
+Jak ? Aby dodać testy do projektu CsvParser potrzebne będzie parę modyfikacji. Do implementacji zostanie uzyta biblioteka NUnit.
+Dlaczego ? Testy pozwalają na wprowadzanie zmian z większą pewnością.
+Dodanie solucji i projektu Pierwszą modyfikacją projektu CsvParser jest dodanie pliku .</description>
+    </item>
+    
+    <item>
+      <title>Covid-19 CsvParser</title>
+      <link>http://example.org/post/covid-19-csvparser/</link>
+      <pubDate>Sat, 09 May 2020 16:55:02 +0200</pubDate>
+      
+      <guid>http://example.org/post/covid-19-csvparser/</guid>
+      <description>Co? Na potrzeby Api został stworzony konsolowy program mający na celu parsowanie plików csv do JSON.
+Dlaczego? Implementacja parsowania csv została rozdzielona od Api ponieważ:
+ Pozwoli to na lepsze skalowanie, ten proces będzie odpalony tylko raz w przypadku wystąpienie na</description>
+    </item>
+    
+    <item>
+      <title>Covid-19 Api</title>
+      <link>http://example.org/post/covid-19-api/</link>
+      <pubDate>Tue, 05 May 2020 16:55:02 +0200</pubDate>
+      
+      <guid>http://example.org/post/covid-19-api/</guid>
+      <description>Na początku tego wpisu postaram sie odpowiedzieć an trzy pytania dotyczące projektu Covid-19 App Co?, Dlaczego? i Jak?hshshhs
+Co? Po rozmowach z kuzynem, postanowiłem napisać małą aplikacje wyświetlającą wykresy dotyczące statystyk zachorowań na Covid-19.
+Aplikacja będzie obejmować front-end i back-end.</description>
+    </item>
+    
+    <item>
+      <title>Github Pages &#43; Hugo statyczna strona w 30 minut</title>
+      <link>http://example.org/post/github-pages/</link>
+      <pubDate>Mon, 04 May 2020 14:18:13 +0200</pubDate>
+      
+      <guid>http://example.org/post/github-pages/</guid>
+      <description>W tym poście postaram sie przedstawić instrukcje jak stworzyć blog z użyciem Hugo i GitHub Pages.
+Hugo jest to generator statycznych stron internetowych, użycie takiego narzędzia pozwala na szybie dodawanie i edytowanie treści na stronie.
+W połączeniu z GitHub Pages możliwe jest stworzenie strony internetowej w przeciągu 30 minut z darmowym hostingiem, dodatkowym plusem takie strony jest domyślny protokół HTTPS działający z GitHub Pages.</description>
+    </item>
+    
+    <item>
+      <title>Polish speech recognition with DeepSpeech</title>
+      <link>http://example.org/post/first/</link>
+      <pubDate>Sun, 03 May 2020 14:52:24 +0200</pubDate>
+      
+      <guid>http://example.org/post/first/</guid>
+      <description>In progresssd.</description>
+    </item>
+    
+  </channel>
+</rss>

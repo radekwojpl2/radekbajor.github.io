@@ -1,0 +1,353 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>JrDevLife - Covid-19 CsvParser </title>
+    
+    
+    <meta content="JrDevLife" name="keywords">
+    
+    <meta content="JrDevLife - Opis projektu Covid-19 App, Covid19.Api część 2" name="description">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    
+
+    
+
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=analytics-code"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments)};
+          gtag('js', new Date());
+          gtag('config', 'analytics-code');
+        </script>
+    
+
+    
+    
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+    
+
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/self/css/default.css">
+    <script async src="/layui/layui.js"></script>
+
+    <link rel="stylesheet" async href="/self/css/markdown.min.css">
+    <link rel="stylesheet" async href="/self/css/gallery.css">
+    
+    
+    
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
+    <script async src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.0/lazysizes.min.js" integrity="sha256-h2tMEmhemR2IN4wbbdNjj9LaDIjzwk2hralQwfJmBOE=" crossorigin="anonymous"></script></head>
+
+<body>
+    
+    <header class="layui-header layui-bg-cyan">
+
+    
+    
+    <a class="nav-self-logo" href="/">
+        JrDevLife
+    </a>
+
+    <ul class="layui-nav layui-layout-right layui-bg-cyan" lay-filter="">
+        
+        
+        <li class="layui-nav-item" id="nav_big"><a href="/post/">Posts</a></li>
+        
+
+        
+            
+                <li class="layui-nav-item" id="nav_big"><a href="/">Home</a></li>
+            
+                <li class="layui-nav-item" id="nav_big"><a href="/author/">Author</a></li>
+            
+        
+
+        
+        <li class="layui-nav-item" id="nav_small">
+            <a href="javascript:;">
+                <i class="layui-icon layui-icon-app" style="font-size: 24px;"></i>
+            </a>
+
+            <dl class="layui-nav-child">
+                
+                <dd><a href="/post/">Posts</a></dd>
+                
+
+                
+                    
+                        <dd><a href="/">Home</a></dd>
+                    
+                        <dd><a href="/author/">Author</a></dd>
+                    
+                
+            </dl>
+        </li>
+    </ul>
+</header>
+
+<script>
+layui.use('element', function(){
+  var element = layui.element;
+});
+</script>
+        <div id="content" style="min-height:80%">
+<div class="layui-container" style="margin-bottom: 10px">
+    
+
+    <div class="layui-row layui-col-space10">
+        <div class="layui-col-md12 layui-col-sm12 layui-col-xs12">
+            <div class="layui-card single-card">
+                <br />
+                <blockquote class="self-elem-quote  markdown-body single-title" >
+                    <h1>Covid-19 CsvParser</h1>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2020-05-09</span>
+
+    
+    
+
+    
+
+    
+    
+    
+</h3>
+                </blockquote>
+                <div class="layui-card-body markdown-body single-content">
+                    <h2 id="co">Co?</h2>
+<p>Na potrzeby Api został stworzony konsolowy program mający na celu parsowanie plików csv do JSON.</p>
+<h2 id="dlaczego">Dlaczego?</h2>
+<p>Implementacja parsowania csv została rozdzielona od Api ponieważ:</p>
+<ol>
+<li>Pozwoli to na lepsze skalowanie, ten proces będzie odpalony tylko raz w przypadku wystąpienie na<br>
+przykład dwóch instancji APi,</li>
+<li>Api nie powinno zajmować sie parsowaniem plików,</li>
+<li>Możliwe będzie uruchomienie tego procesu z crontab lub chmurowej lambda function.</li>
+</ol>
+<h2 id="jak">Jak?</h2>
+<p>Program przyjmuje na wejściu dwa dodatkowe parametry</p>
+<ol>
+<li>Ścieżkę do folderu zawierającego pliki csv,</li>
+<li>(opcjonalnie)Ścieżkę do folderu gdzie mają być zapisane pliki JSON, jeżeli parametr nie zostanie podany to domyślny folder znajduje sie jeden folder wyżej niż plik binarny.</li>
+</ol>
+<p>Jeżeli program poprawnie sparsuje pliki csv oraz zapisze ja na dysku, program zwraca kod: <strong>1 </strong><br>
+Jeżeli parsowanie jakiegoś pliku sie nie powiedzie program przerywa swoją prace, loguje do konsoli który plik
+nie może się sparsować i zwraca kod <strong>0</strong>.</p>
+<h2 id="implementacja">Implementacja</h2>
+<p>W implementacji zostanie pokazane ścieżka implantacyjna dla jednego z plików csv</p>
+<p>Na początku potrzebna jest zdefiniowanie modelu danych zawartych w csv oraz klasa pozwalająca na czytanie plików csv.</p>
+<h3 id="model">Model</h3>
+<ul>
+<li>[Index(0)] wskazuje na którym miejscu znajduję sie dana kolumna w pliku csv.</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C#" data-lang="C#"> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CountriesAggregated</span>
+    {
+<span style="color:#a6e22e">        [Index(0)]</span> <span style="color:#66d9ef">public</span> DateTime Date { <span style="color:#66d9ef">get</span>; <span style="color:#66d9ef">set</span>; }
+<span style="color:#a6e22e">        [Index(1)]</span> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">string</span> Country { <span style="color:#66d9ef">get</span>; <span style="color:#66d9ef">set</span>; }
+<span style="color:#a6e22e">        [Index(2)]</span> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> Confirmed { <span style="color:#66d9ef">get</span>; <span style="color:#66d9ef">set</span>; }
+<span style="color:#a6e22e">        [Index(3)]</span> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> Recovered { <span style="color:#66d9ef">get</span>; <span style="color:#66d9ef">set</span>; }
+<span style="color:#a6e22e">        [Index(4)]</span> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> Deaths { <span style="color:#66d9ef">get</span>; <span style="color:#66d9ef">set</span>; }
+    }
+</code></pre></div><p>Do tego celu została stworzona klas <strong><i>CsvProvider.cs</i></strong> i interfejs <strong><i>IFileProvider.cs</i></strong>.</p>
+<h3 id="csvprovider">CsvProvider</h3>
+<ul>
+<li>Interfejs</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C#" data-lang="C#"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> IFileProvider
+    {
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">string</span> ParseCountriesAggregatedFile(<span style="color:#66d9ef">string</span> pathToFolder);
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">string</span> ParseUsConfirmedFile(<span style="color:#66d9ef">string</span> pathToFolder);
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">string</span> ParseUsDeathsFile(<span style="color:#66d9ef">string</span> pathToFolder);
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">string</span> ParseWorldWideAggregatedFile(<span style="color:#66d9ef">string</span> pathToFolder);
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">string</span> ParseKeyCountriesPivotedFile(<span style="color:#66d9ef">string</span> pathToFolder);
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">string</span> ParseTimeSeries19CovidCombinedFile(<span style="color:#66d9ef">string</span> pathToFolder);
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">string</span> ParseReferencesFile(<span style="color:#66d9ef">string</span> pathToFolder);
+
+    }
+</code></pre></div><ul>
+<li>Klasa i przykładowa implementacja ParseCountriesAggregatedFile()</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C#" data-lang="C#"> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CsvProvider</span> : IFileProvider
+    {
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">string</span> ParseCountriesAggregatedFile(<span style="color:#66d9ef">string</span> pathToFolder)
+        {
+            <span style="color:#66d9ef">try</span>
+            {
+                <span style="color:#75715e">//Environment.CurrentDirectory
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">using</span> (<span style="color:#66d9ef">var</span> reader =
+                    <span style="color:#66d9ef">new</span> StreamReader(
+                        pathToFolder + <span style="color:#e6db74">&#34;/countries-aggregated.csv&#34;</span>))
+                <span style="color:#66d9ef">using</span> (<span style="color:#66d9ef">var</span> csv = <span style="color:#66d9ef">new</span> CsvReader(reader, CultureInfo.InvariantCulture))
+                {
+                    <span style="color:#66d9ef">var</span> records = csv.GetRecords&lt;CountriesAggregated&gt;();
+
+                    <span style="color:#66d9ef">return</span> JsonConvert.SerializeObject(records);
+                }
+            }
+            <span style="color:#66d9ef">catch</span> (System.Exception exception)
+            {
+                Console.WriteLine(<span style="color:#e6db74">$&#34;ERROR: error during parsing CountriesAggregatedFile&#34;</span>);
+                Console.WriteLine(<span style="color:#e6db74">$&#34;Exception: {exception.Message} / InnerException: {exception.InnerException} &#34;</span>);
+
+                <span style="color:#66d9ef">throw</span>;
+            }
+        }
+    }
+</code></pre></div><h3 id="csvservice">CsvService</h3>
+<p>Gdy plik już jest sparsowany potrzebna jest metoda która zapisze na dysku sparsowany plik.</p>
+<ul>
+<li>Interfejs</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C#" data-lang="C#"> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> ISaveFiles
+    {
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">bool</span> SaveCountriesAggregatedFile();
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">bool</span> SaveUsConfirmedFile();
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">bool</span> SaveUsDeathsFile();
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">bool</span> SaveWorldWideAggregatedFile();
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">bool</span> SaveKeyCountriesPivotedFile();
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">bool</span> SaveTimeSeries19CovidCombinedFile();
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">bool</span> SaveReferencesFile();
+    }
+</code></pre></div><ul>
+<li>Klasa</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C#" data-lang="C#"> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CsvService</span> : ISaveFiles
+    {
+        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">readonly</span> IFileProvider _fileProvider;
+        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">readonly</span> <span style="color:#66d9ef">string</span> _pathToCsvFiles;
+        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">readonly</span> <span style="color:#66d9ef">string</span> _pathToJsonFilesDestination;
+
+        <span style="color:#66d9ef">public</span> CsvService(<span style="color:#66d9ef">string</span> pathToCsvFiles, <span style="color:#66d9ef">string</span> pathToJsonFilesDestination, IFileProvider fileProvider)
+        {
+            _pathToCsvFiles = pathToCsvFiles;
+            _pathToJsonFilesDestination = pathToJsonFilesDestination;
+            _fileProvider = fileProvider;
+        }
+
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">bool</span> SaveCountriesAggregatedFile()
+        {
+            <span style="color:#66d9ef">try</span>
+            {
+                <span style="color:#66d9ef">var</span> content = _fileProvider.ParseCountriesAggregatedFile(_pathToCsvFiles);
+
+                <span style="color:#66d9ef">this</span>.DeleteFileIfExist(
+                    _pathToJsonFilesDestination + <span style="color:#e6db74">&#34;/countries-aggregated.json&#34;</span>);
+
+                File.WriteAllText(_pathToJsonFilesDestination + <span style="color:#e6db74">&#34;/countries-aggregated.json&#34;</span>,
+                    content);
+
+                <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>;
+            }
+            <span style="color:#66d9ef">catch</span> (System.Exception exception)
+            {
+                Console.WriteLine(<span style="color:#e6db74">&#34;Error: Error during saving CountriesAggregatedFile&#34;</span>);
+                <span style="color:#66d9ef">throw</span>;
+            }
+        }
+    }
+</code></pre></div><p>Pomocnicza metoda DeleteFileIfExist()</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C#" data-lang="C#"> <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> DeleteFileIfExist(<span style="color:#66d9ef">string</span> filePath)
+        {
+            <span style="color:#66d9ef">if</span> (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+        }
+</code></pre></div><p>Na końcu parametry oraz funkcja main().</p>
+<p>Możliwe było by użycie biblioteki obsługującej parametry ale nie ma co wyciągać wielkiej armaty na dwa parametry(KISS).<br>
+Parametry obsługiwane są przez funckje:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C#" data-lang="C#">
+        <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> laodParameters(<span style="color:#66d9ef">string</span>[] args, <span style="color:#66d9ef">ref</span> <span style="color:#66d9ef">string</span> pathToCSV, <span style="color:#66d9ef">ref</span> <span style="color:#66d9ef">string</span> pathToJsonDestination)
+        {
+            <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i = <span style="color:#ae81ff">0</span>; i &lt; args.Length; i++)
+            {
+                <span style="color:#66d9ef">switch</span> (i)
+                {
+                    <span style="color:#66d9ef">case</span> <span style="color:#ae81ff">0</span>:
+                        <span style="color:#66d9ef">if</span> (Directory.Exists(args[i]))
+                        {
+                            pathToCSV = args[i];
+                        }
+                        <span style="color:#66d9ef">else</span>
+                        {
+                            Console.WriteLine(<span style="color:#e6db74">&#34;ERROR: Path to csv files have to be specified!&#34;</span>);
+                            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> Exception(<span style="color:#e6db74">&#34;Path to csv files have to be specified!&#34;</span>);
+                        }
+
+                        <span style="color:#66d9ef">break</span>;
+                    <span style="color:#66d9ef">case</span> <span style="color:#ae81ff">1</span>:
+                        <span style="color:#66d9ef">if</span> (args[i] != <span style="color:#66d9ef">null</span>)
+                        {
+                            pathToJsonDestination = args[i];
+                        }
+                        <span style="color:#66d9ef">else</span>
+                        {
+                            pathToJsonDestination = Directory.GetCurrentDirectory() + <span style="color:#e6db74">&#34;/../JsonData/&#34;</span>;
+                        }
+
+                        <span style="color:#66d9ef">break</span>;
+                }
+            }
+        }
+</code></pre></div><p>Oraz funkcja main:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C#" data-lang="C#"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> Main(<span style="color:#66d9ef">string</span>[] args)
+        {
+            <span style="color:#66d9ef">string</span> pathToCsvFiles = <span style="color:#e6db74">&#34;&#34;</span>;
+            <span style="color:#66d9ef">string</span> pathToJsonDestination = <span style="color:#e6db74">&#34;&#34;</span>;
+
+            <span style="color:#66d9ef">try</span>
+            {
+                laodParameters(args, <span style="color:#66d9ef">ref</span> pathToCsvFiles, <span style="color:#66d9ef">ref</span> pathToJsonDestination);
+            }
+            <span style="color:#66d9ef">catch</span> (Exception e)
+            {
+                Console.WriteLine(e);
+                <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+            }
+
+            <span style="color:#66d9ef">var</span> csvProvider = <span style="color:#66d9ef">new</span> CsvService(pathToCsvFiles, pathToJsonDestination, <span style="color:#66d9ef">new</span> CsvProvider());
+
+            <span style="color:#66d9ef">try</span>
+            {
+                csvProvider.SaveWorldWideAggregatedFile();
+                
+                <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>;
+            }
+            <span style="color:#66d9ef">catch</span> (Exception e)
+            {
+                Console.WriteLine(<span style="color:#e6db74">$&#34;ERROR: Error during file processing&#34;</span>);
+                <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+            }
+        }
+</code></pre></div><h3 id="ulepszenia">Ulepszenia</h3>
+<p>Możliwe ulepszenia:</p>
+<ol>
+<li>Dodanie wstrzykiwania zależności,</li>
+<li>Dodanie auto mappera,</li>
+<li>Dodanie biblioteki do parametrów,</li>
+<li>Zmiana plików json na zapis do bazy.</li>
+</ol>
+</div>
+            </div>
+        </div>
+
+        
+    </div>
+</div>
+
+
+        </div><footer>
+    
+    
+    <div class="layui-container">
+        <p class="copyright">&copy; All rights reserved. Powered by <a href='https://gohugo.io' style='color:#FFFFFF'>Hugo</a> and <a href='https://github.com/ertuil/erblog' style='color:#FFFFFF'>Erblog</a>.</p>
+    </div>
+</footer>
+</body>
+</html>

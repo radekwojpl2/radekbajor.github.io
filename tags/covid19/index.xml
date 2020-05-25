@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Covid19 on JrDevLife</title>
+    <link>http://example.org/tags/covid19/</link>
+    <description>Recent content in Covid19 on JrDevLife</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 25 May 2020 16:55:02 +0200</lastBuildDate>
+    
+	<atom:link href="http://example.org/tags/covid19/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Covid-19 ChartApp, Angular and Basic Docker Configuration</title>
+      <link>http://example.org/post/covid-19-chartapp/</link>
+      <pubDate>Mon, 25 May 2020 16:55:02 +0200</pubDate>
+      
+      <guid>http://example.org/post/covid-19-chartapp/</guid>
+      <description>Co? Do projekty Covid19 dołączy aplikacja kliencka pozwalająca na wyświetlanie wykresów. W pierwszej wersji dostępny będzie jeden wykres przedstawiający sumaryczne ilości śmierci, wyzdrowień oraz wystąpień wirusa. Zostaną obsłużone 3 kraje: Polska, Włochy i Azerbejdżan.
+Jak? Aby to osiągnąć zostanie użyty Framework Angular w wersji 9, Angular Material oraz biblioteka ng2-charts.</description>
+    </item>
+    
+    <item>
+      <title>Covid-19 Api</title>
+      <link>http://example.org/post/covid-19-api/</link>
+      <pubDate>Tue, 05 May 2020 16:55:02 +0200</pubDate>
+      
+      <guid>http://example.org/post/covid-19-api/</guid>
+      <description>Na początku tego wpisu postaram sie odpowiedzieć an trzy pytania dotyczące projektu Covid-19 App Co?, Dlaczego? i Jak?hshshhs
+Co? Po rozmowach z kuzynem, postanowiłem napisać małą aplikacje wyświetlającą wykresy dotyczące statystyk zachorowań na Covid-19.
+Aplikacja będzie obejmować front-end i back-end.</description>
+    </item>
+    
+  </channel>
+</rss>

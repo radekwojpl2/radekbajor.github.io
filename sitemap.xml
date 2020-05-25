@@ -1,137 +1,70 @@
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
-      
-      
-	  <url>
-	    <loc>http://example.org/covid19project/covid-19.api-vol2/</loc>
-	    <lastmod>2020-05-14</lastmod>
-        
-
-        
-	  </url>
-	  
+  <url>
+    <loc>http://example.org/post/covid-19-chartapp/</loc>
+    <lastmod>2020-05-25T16:55:02+02:00</lastmod>
+  </url>
   
-      
-      
-	  <url>
-	    <loc>http://example.org/covid19project/</loc>
-	    <lastmod>2020-05-14</lastmod>
-        
-
-        
-	  </url>
-	  
+  <url>
+    <loc>http://example.org/tags/covid19/</loc>
+    <lastmod>2020-05-25T16:55:02+02:00</lastmod>
+  </url>
   
-      
-      
-	  <url>
-	    <loc>http://example.org/</loc>
-	    <lastmod>2020-05-14</lastmod>
-        
-
-        
-	  </url>
-	  
+  <url>
+    <loc>http://example.org/</loc>
+    <lastmod>2020-05-25T16:55:02+02:00</lastmod>
+  </url>
   
-      
-      
-	  <url>
-	    <loc>http://example.org/covid19project/covid-19.csvparser-vol2/</loc>
-	    <lastmod>2020-05-11</lastmod>
-        
-
-        
-	  </url>
-	  
+  <url>
+    <loc>http://example.org/post/</loc>
+    <lastmod>2020-05-25T16:55:02+02:00</lastmod>
+  </url>
   
-      
-      
-	  <url>
-	    <loc>http://example.org/covid19project/covid-19-csvparser/</loc>
-	    <lastmod>2020-05-09</lastmod>
-        
-
-        
-	  </url>
-	  
+  <url>
+    <loc>http://example.org/tags/</loc>
+    <lastmod>2020-05-25T16:55:02+02:00</lastmod>
+  </url>
   
-      
-      
-	  <url>
-	    <loc>http://example.org/covid19project/covid-19-api/</loc>
-	    <lastmod>2020-05-05</lastmod>
-        
-
-        
-	  </url>
-	  
+  <url>
+    <loc>http://example.org/post/covid-19.api-vol2/</loc>
+    <lastmod>2020-05-14T15:55:02+02:00</lastmod>
+  </url>
   
-      
-      
-	  <url>
-	    <loc>http://example.org/githubpages/github-pages/</loc>
-	    <lastmod>2020-05-04</lastmod>
-        
-
-        
-	  </url>
-	  
+  <url>
+    <loc>http://example.org/post/covid-19.csvparser-vol2/</loc>
+    <lastmod>2020-05-11T15:55:02+02:00</lastmod>
+  </url>
   
-      
-      
-	  <url>
-	    <loc>http://example.org/githubpages/</loc>
-	    <lastmod>2020-05-04</lastmod>
-        
-
-        
-	  </url>
-	  
+  <url>
+    <loc>http://example.org/post/covid-19-csvparser/</loc>
+    <lastmod>2020-05-09T16:55:02+02:00</lastmod>
+  </url>
   
-      
-      
-	  <url>
-	    <loc>http://example.org/author/</loc>
-	    <lastmod>2020-05-03</lastmod>
-        
-
-        
-	  </url>
-	  
+  <url>
+    <loc>http://example.org/post/covid-19-api/</loc>
+    <lastmod>2020-05-05T16:55:02+02:00</lastmod>
+  </url>
   
-      
+  <url>
+    <loc>http://example.org/post/github-pages/</loc>
+    <lastmod>2020-05-04T14:18:13+02:00</lastmod>
+  </url>
   
-      
-      
-	  <url>
-	    <loc>http://example.org/deepspeech/</loc>
-	    <lastmod>2020-05-03</lastmod>
-        
-
-        
-	  </url>
-	  
+  <url>
+    <loc>http://example.org/author/</loc>
+    <lastmod>2020-05-03T14:52:24+02:00</lastmod>
+  </url>
   
-      
-      
-	  <url>
-	    <loc>http://example.org/deepspeech/first/</loc>
-	    <lastmod>2020-05-03</lastmod>
-        
-
-        
-	  </url>
-	  
+  <url>
+    <loc>http://example.org/addons/</loc>
+    <lastmod>2020-05-03T14:52:24+02:00</lastmod>
+  </url>
   
-      
-      
-	  <url>
-	    <loc>http://example.org/tags/</loc>
-	    <lastmod>0001-01-01</lastmod>
-        
-
-        
-	  </url>
-	  
+  <url>
+    <loc>http://example.org/post/first/</loc>
+    <lastmod>2020-05-03T14:52:24+02:00</lastmod>
+  </url>
   
 </urlset>
