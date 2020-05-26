@@ -137,11 +137,416 @@ layui.use('element', function(){
 <li>Node.js(Moja wersja v12.16.3) <a href="https://nodejs.org/en/">Node.js</a></li>
 <li>Angular 9 <a href="https://angular.io/guide/setup-local">Getting started</a></li>
 </ol>
+<h3 id="założenia">Założenia</h3>
+<ol>
+<li>Solucja posiada 3 główne foldery
+<ul>
+<li><strong>core</strong> trafią tu takie elementy jak serwisy, komponenty do autoryzacji (jeden module na wszystko)</li>
+<li><strong>feature</strong> trafią tu komponenty odpowiedzialne za dostarczanie głównych funkcjonalności (module per funkcjonalność)</li>
+<li><strong>shared</strong> trafią tu re-używalne komponenty (jeden module na wszystko)</li>
+</ul>
+</li>
+<li>Podział komponentów na Presentational lub Container
+<ul>
+<li><strong>Presentational</strong> głównym celem komponentu jest prezentowanie danych, komunikacja pomiędzy komponentami odbywać się będzie poprzez @Input()/@Output()</li>
+<li><strong>Container</strong> ten typ komponentu będzie odpowiedzialny za pobieranie, modyfikowanie i zarządzanie</li>
+</ul>
+</li>
+<li>Routy beda przechowywane w osobnym module.</li>
+</ol>
 <h3 id="implementacja">Implementacja</h3>
+<p>Implementacja nie zawiera etapu pisania głównego navbaru, w tej wersji nie ma potrzeby dodawania go.</p>
 <p>Pierwszym krokiem do stworzenia tej aplikacji było stworzenie oraz skonfigurowanie całego projektu tak żeby wspierał wyżej wymienione komponenty.</p>
-<p>Aby stworzyć projekt należy uruchomić następującą polecenie:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ng new &lt;project-name&gt;
-</code></pre></div></div>
+<p>Aby stworzyć projekt oraz dodać Angular Material należy uruchomić następującą polecenia:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ng new &lt;project-name&gt;
+$ ng add @angular/material
+</code></pre></div><p>Pierwszym krokiem jest stworzenie serwisu zaczytującego dane z api, aby to zrobić należy uruchomić polecenia:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ng g m core
+$ ng g s covid-19
+</code></pre></div><p>Warto w tym miejscu wspomnieć o potrzebie oddzieleniu modelu aplikacji klienckiej od modelu api, taka operacja pozwoli na łatwe wprowadzanie zmian jeżeli model api sie zmieni, nie będzie zachodziła potrzeba zmiany wszystkich plików używających danego modelu. Do tego celu można posłużyć sie wzorcem </strong>Adapter</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#960050;background-color:#1e0010">@</span><span style="color:#a6e22e">Injectable</span>({
+  <span style="color:#a6e22e">providedIn</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;root&#39;</span> <span style="color:#75715e">//ta lini mówi że serwis będzie występować w postaci Singelton
+</span><span style="color:#75715e"></span>})
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Covid19Service</span> {
+
+  <span style="color:#a6e22e">constructor</span>(
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">httpClient</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">HttpClient</span>
+  ) { }
+
+  <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">GetAllAggregatedCountries</span>()<span style="color:#f92672">:</span> <span style="color:#a6e22e">Observable</span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">CountriesAggregated</span>[]<span style="color:#f92672">&gt;</span>{
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">httpClient</span>.<span style="color:#a6e22e">get</span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">CountriesAggregated</span>[]<span style="color:#f92672">&gt;</span>(<span style="color:#e6db74">&#39;https://localhost:5001/CsvController/GetAllDataFromCountriesAggregated&#39;</span>)  
+    <span style="color:#75715e">//url powinien być zaczytany z zmiennych środowiskowych, będzie to przedstawione w innej część projektu  
+</span><span style="color:#75715e"></span>  }
+}
+</code></pre></div><p>Interfejs CountriesAggregated</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">CountriesAggregated</span>{
+    <span style="color:#a6e22e">confirmed</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">number</span>;
+    <span style="color:#a6e22e">country</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">string</span>;
+    <span style="color:#a6e22e">date</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">string</span>;
+    <span style="color:#a6e22e">deaths</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">number</span>;
+    <span style="color:#a6e22e">recovered</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">number</span>;
+  }
+</code></pre></div><p>Następnym krokiem jest stworzenie komponentu zawierającego wykres dla wszystkich agregowanych krajów oraz re-używalnego komponentu pozwalającego na wybieranie interesującego nas kraju.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ng g m shared
+$ ng g c shared/country-picker
+
+$ ng g m feature/countries-aggregated-chart
+$ ng g c feature/countries-aggregated-chart
+</code></pre></div><p>W tym pliku pokazany jest koncept 2 z założeń projektu.</p>
+<p>Komponent <strong>app-country-picker</strong> jest komponentem prezentacyjnym, takie podejście sprawia że jest on niezależny od źródła danych, można go użyć w wielu miejscach oraz jego modyfikacja jest łatwa.
+Poniżej tego komponentu znajduje sie sekcja zawierająca sumaryczny zbiór danych dotyczący poszczególnego kraju.
+Ten kawałek kodu nie spełnia założeń re-używalności <a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself">DRY!!!</a>, można by było użyć tego komponentu do pokazania sumarycznej wartości zachorowań, wyzdrowień oraz śmierci dla całego świata.</p>
+<h4 id="komponent-countries-aggregated-chart">Komponent Countries-aggregated-chart</h4>
+<p>Nie jest to ostateczna wersja komponentu metody filtrujące powinny znaleźć sie w osobnych funkcjach (znowu DRY!), ponad to można by było zrobić kompoennt który wyświetlał by wykres w zależności od podanej konfiguracji ale aktualnie moim zdaniem był by to overkill <a href="https://en.wikipedia.org/wiki/KISS_principle">KISS</a>.</p>
+<p>Plik Html</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">app-country-picker</span> <span style="color:#960050;background-color:#1e0010">[</span><span style="color:#a6e22e">countryList</span><span style="color:#960050;background-color:#1e0010">]</span> <span style="color:#960050;background-color:#1e0010">=</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">countryList</span><span style="color:#960050;background-color:#1e0010">&#34;</span> <span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">onCountryChanged</span><span style="color:#960050;background-color:#1e0010">)</span> <span style="color:#960050;background-color:#1e0010">=</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">countryHasChanged</span><span style="color:#960050;background-color:#1e0010">($</span><span style="color:#a6e22e">event</span><span style="color:#960050;background-color:#1e0010">)&#34;</span> &gt;&lt;/<span style="color:#f92672">app-country-picker</span>&gt;
+&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;container&#34;</span>&gt;
+  &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;container__item&#34;</span>&gt;
+    &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;container__header&#34;</span>&gt;
+      RECOVERED
+    &lt;/<span style="color:#f92672">div</span>&gt;
+    &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;container__content container__content-recovered&#34;</span>&gt;
+      {{recovered}}
+    &lt;/<span style="color:#f92672">div</span>&gt;
+  &lt;/<span style="color:#f92672">div</span>&gt;
+  &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;container__item&#34;</span>&gt;
+    &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;container__header&#34;</span>&gt;
+      TOTAL
+    &lt;/<span style="color:#f92672">div</span>&gt;
+    &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;container__content&#34;</span>&gt;
+      {{total}}
+    &lt;/<span style="color:#f92672">div</span>&gt;
+  &lt;/<span style="color:#f92672">div</span>&gt;
+  &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;container__item&#34;</span>&gt;
+    &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;container__header&#34;</span>&gt;
+      DEATHS
+    &lt;/<span style="color:#f92672">div</span>&gt;
+    &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;container__content container__content-deaths&#34;</span>&gt;
+      {{deaths}}
+    &lt;/<span style="color:#f92672">div</span>&gt;
+  &lt;/<span style="color:#f92672">div</span>&gt;
+&lt;/<span style="color:#f92672">div</span>&gt;
+
+&lt;<span style="color:#f92672">div</span>&gt;
+  &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">style</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;display: block&#34;</span>&gt;
+    &lt;<span style="color:#f92672">canvas</span>
+      <span style="color:#a6e22e">baseChart</span>
+      <span style="color:#960050;background-color:#1e0010">[(</span><span style="color:#a6e22e">datasets</span><span style="color:#960050;background-color:#1e0010">)]=&#34;</span><span style="color:#a6e22e">barChartData</span><span style="color:#960050;background-color:#1e0010">&#34;</span>
+      <span style="color:#960050;background-color:#1e0010">[</span><span style="color:#a6e22e">labels</span><span style="color:#960050;background-color:#1e0010">]=&#34;</span><span style="color:#a6e22e">barChartLabels</span><span style="color:#960050;background-color:#1e0010">&#34;</span>
+      <span style="color:#960050;background-color:#1e0010">[</span><span style="color:#a6e22e">options</span><span style="color:#960050;background-color:#1e0010">]=&#34;</span><span style="color:#a6e22e">barChartOptions</span><span style="color:#960050;background-color:#1e0010">&#34;</span>
+      <span style="color:#960050;background-color:#1e0010">[</span><span style="color:#a6e22e">legend</span><span style="color:#960050;background-color:#1e0010">]=&#34;</span><span style="color:#a6e22e">barChartLegend</span><span style="color:#960050;background-color:#1e0010">&#34;</span>
+      <span style="color:#960050;background-color:#1e0010">[</span><span style="color:#a6e22e">chartType</span><span style="color:#960050;background-color:#1e0010">]=&#34;</span><span style="color:#a6e22e">barChartType</span><span style="color:#960050;background-color:#1e0010">&#34;</span>
+    &gt;
+    &lt;/<span style="color:#f92672">canvas</span>&gt;
+  &lt;/<span style="color:#f92672">div</span>&gt;
+&lt;/<span style="color:#f92672">div</span>&gt;
+
+</code></pre></div><p>Plik TypeScript</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#960050;background-color:#1e0010">@</span><span style="color:#a6e22e">Component</span>({
+  <span style="color:#a6e22e">selector</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;app-countries-aggregated-chart&#39;</span>,
+  <span style="color:#a6e22e">templateUrl</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;./countries-aggregated-chart.component.html&#39;</span>,
+  <span style="color:#a6e22e">styleUrls</span><span style="color:#f92672">:</span> [<span style="color:#e6db74">&#39;./countries-aggregated-chart.component.css&#39;</span>]
+})
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CountriesAggregatedChartComponent</span> <span style="color:#66d9ef">implements</span> <span style="color:#a6e22e">OnInit</span> {
+  <span style="color:#a6e22e">constructor</span>(<span style="color:#66d9ef">private</span> <span style="color:#a6e22e">covidService</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">Covid19Service</span>) {}
+
+  <span style="color:#a6e22e">allData</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">CountriesAggregated</span>[];
+
+  <span style="color:#a6e22e">countryList</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">string</span>[];
+
+  <span style="color:#a6e22e">total</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">number</span>;
+  <span style="color:#a6e22e">deaths</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">number</span>;
+  <span style="color:#a6e22e">recovered</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">number</span>;
+
+  <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">barChartOptions</span> <span style="color:#f92672">=</span> {
+    <span style="color:#a6e22e">scaleShowVerticalLines</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">false</span>,
+    <span style="color:#a6e22e">responsive</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>
+  };
+  <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">barChartLabels</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">Label</span>[] <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;&#39;</span>, <span style="color:#e6db74">&#39;&#39;</span>, <span style="color:#e6db74">&#39;&#39;</span>];
+  <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">barChartType</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;line&#39;</span>;
+  <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">barChartLegend</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+
+  <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">barChartData</span> <span style="color:#f92672">=</span> [
+    { <span style="color:#a6e22e">data</span><span style="color:#f92672">:</span> [], <span style="color:#a6e22e">label</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;Poland Deaths&#39;</span> },
+    { <span style="color:#a6e22e">data</span><span style="color:#f92672">:</span> [], <span style="color:#a6e22e">label</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;Poland recoverd&#39;</span> },
+    { <span style="color:#a6e22e">data</span><span style="color:#f92672">:</span> [], <span style="color:#a6e22e">label</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;Poland confirmed&#39;</span> }
+  ];
+
+  <span style="color:#a6e22e">countryHasChanged</span>(<span style="color:#a6e22e">$event</span>) {
+    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">covidService</span>.<span style="color:#a6e22e">GetAllAggregatedCountries</span>().<span style="color:#a6e22e">subscribe</span>((<span style="color:#a6e22e">data</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">any</span>) =&gt; {
+      <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">allData</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">data</span>;
+
+      <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">total</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">allData</span>
+        .<span style="color:#a6e22e">filter</span>(<span style="color:#a6e22e">x</span> =&gt; <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">country</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">$event</span>)
+        .<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">x</span> =&gt; <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">confirmed</span>)
+        .<span style="color:#a6e22e">slice</span>(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)[<span style="color:#ae81ff">0</span>];
+
+      <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">deaths</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">allData</span>
+        .<span style="color:#a6e22e">filter</span>(<span style="color:#a6e22e">x</span> =&gt; <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">country</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">$event</span>)
+        .<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">x</span> =&gt; <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">deaths</span>)
+        .<span style="color:#a6e22e">slice</span>(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)[<span style="color:#ae81ff">0</span>];
+
+      <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">recovered</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">allData</span>
+        .<span style="color:#a6e22e">filter</span>(<span style="color:#a6e22e">x</span> =&gt; <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">country</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">$event</span>)
+        .<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">x</span> =&gt; <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">recovered</span>)
+        .<span style="color:#a6e22e">slice</span>(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)[<span style="color:#ae81ff">0</span>];
+
+      <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">barChartLabels</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">allData</span>
+        .<span style="color:#a6e22e">filter</span>(<span style="color:#a6e22e">x</span> =&gt; <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">country</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">$event</span>)
+        .<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">x</span> =&gt; <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">date</span>.<span style="color:#a6e22e">slice</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">10</span>)) <span style="color:#a6e22e">as</span> <span style="color:#a6e22e">Label</span>[];
+
+      <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">barChartData</span> <span style="color:#f92672">=</span> [
+        {
+          <span style="color:#a6e22e">data</span><span style="color:#f92672">:</span> [].<span style="color:#a6e22e">concat</span>.<span style="color:#a6e22e">apply</span>(
+            [],
+            <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">allData</span>
+              .<span style="color:#a6e22e">filter</span>(<span style="color:#a6e22e">x</span> =&gt; <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">country</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">$event</span>)
+              .<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">x</span> =&gt; <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">deaths</span>)
+              .<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">value</span>, <span style="color:#a6e22e">index</span>, <span style="color:#a6e22e">elements</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">number</span>[]) =&gt; {
+                <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">index</span> <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>) {
+                  <span style="color:#66d9ef">return</span> (<span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">elements</span>[<span style="color:#a6e22e">index</span>] <span style="color:#f92672">-</span> <span style="color:#a6e22e">elements</span>[<span style="color:#a6e22e">index</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>]);
+                }
+              })
+          ),
+          <span style="color:#a6e22e">label</span><span style="color:#f92672">:</span> <span style="color:#e6db74">`</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">$event</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> Deaths`</span>
+        },
+        {
+          <span style="color:#a6e22e">data</span><span style="color:#f92672">:</span> [].<span style="color:#a6e22e">concat</span>.<span style="color:#a6e22e">apply</span>(
+            [],
+            <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">allData</span>
+              .<span style="color:#a6e22e">filter</span>(<span style="color:#a6e22e">x</span> =&gt; <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">country</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">$event</span>)
+              .<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">x</span> =&gt; <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">recovered</span>)
+              .<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">value</span>, <span style="color:#a6e22e">index</span>, <span style="color:#a6e22e">elements</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">number</span>[]) =&gt; {
+                <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">index</span> <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>) {
+                  <span style="color:#66d9ef">return</span> (<span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">elements</span>[<span style="color:#a6e22e">index</span>] <span style="color:#f92672">-</span> <span style="color:#a6e22e">elements</span>[<span style="color:#a6e22e">index</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>]);
+                }
+              })
+          ),
+          <span style="color:#a6e22e">label</span><span style="color:#f92672">:</span> <span style="color:#e6db74">`</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">$event</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> recoverd`</span>
+        },
+        {
+          <span style="color:#a6e22e">data</span><span style="color:#f92672">:</span> [].<span style="color:#a6e22e">concat</span>.<span style="color:#a6e22e">apply</span>(
+            [],
+            <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">allData</span>
+              .<span style="color:#a6e22e">filter</span>(<span style="color:#a6e22e">x</span> =&gt; <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">country</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">$event</span>)
+              .<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">x</span> =&gt; <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">confirmed</span>)
+              .<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">value</span>, <span style="color:#a6e22e">index</span>, <span style="color:#a6e22e">elements</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">number</span>[]) =&gt; {
+                <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">index</span> <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>) {
+                  <span style="color:#66d9ef">return</span> (<span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">elements</span>[<span style="color:#a6e22e">index</span>] <span style="color:#f92672">-</span> <span style="color:#a6e22e">elements</span>[<span style="color:#a6e22e">index</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>]);
+                }
+              })
+          ),
+          <span style="color:#a6e22e">label</span><span style="color:#f92672">:</span> <span style="color:#e6db74">`</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">$event</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> confirmed`</span>
+        }
+      ];
+    });
+  }
+
+  <span style="color:#a6e22e">ngOnInit</span>()<span style="color:#f92672">:</span> <span style="color:#66d9ef">void</span> {
+    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">covidService</span>.<span style="color:#a6e22e">GetAllAggregatedCountries</span>().<span style="color:#a6e22e">subscribe</span>((<span style="color:#a6e22e">data</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">any</span>) =&gt; {
+      <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">allData</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">data</span>;
+
+      <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">countryList</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">allData</span>.<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">x</span> =&gt; <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">country</span>).<span style="color:#a6e22e">filter</span>((<span style="color:#a6e22e">v</span>, <span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">a</span>) =&gt; <span style="color:#a6e22e">a</span>.<span style="color:#a6e22e">indexOf</span>(<span style="color:#a6e22e">v</span>) <span style="color:#f92672">===</span> <span style="color:#a6e22e">i</span>);
+
+      <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">total</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">allData</span>
+        .<span style="color:#a6e22e">filter</span>(<span style="color:#a6e22e">x</span> =&gt; <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">country</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;Poland&#39;</span>)
+        .<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">x</span> =&gt; <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">confirmed</span>)
+        .<span style="color:#a6e22e">slice</span>(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)[<span style="color:#ae81ff">0</span>];
+
+      <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">deaths</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">allData</span>
+        .<span style="color:#a6e22e">filter</span>(<span style="color:#a6e22e">x</span> =&gt; <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">country</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;Poland&#39;</span>)
+        .<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">x</span> =&gt; <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">deaths</span>)
+        .<span style="color:#a6e22e">slice</span>(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)[<span style="color:#ae81ff">0</span>];
+
+      <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">recovered</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">allData</span>
+        .<span style="color:#a6e22e">filter</span>(<span style="color:#a6e22e">x</span> =&gt; <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">country</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;Poland&#39;</span>)
+        .<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">x</span> =&gt; <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">recovered</span>)
+        .<span style="color:#a6e22e">slice</span>(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)[<span style="color:#ae81ff">0</span>];
+
+      <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">barChartLabels</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">allData</span>
+        .<span style="color:#a6e22e">filter</span>(<span style="color:#a6e22e">x</span> =&gt; <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">country</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;Poland&#39;</span>)
+        .<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">x</span> =&gt; <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">date</span>.<span style="color:#a6e22e">slice</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">10</span>)) <span style="color:#a6e22e">as</span> <span style="color:#a6e22e">Label</span>[];
+
+      <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">barChartData</span> <span style="color:#f92672">=</span> [
+        {
+          <span style="color:#a6e22e">data</span><span style="color:#f92672">:</span> [].<span style="color:#a6e22e">concat</span>.<span style="color:#a6e22e">apply</span>(
+            [],
+            <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">allData</span>
+              .<span style="color:#a6e22e">filter</span>(<span style="color:#a6e22e">x</span> =&gt; <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">country</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;Poland&#39;</span>)
+              .<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">x</span> =&gt; <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">deaths</span>)
+              .<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">value</span>, <span style="color:#a6e22e">index</span>, <span style="color:#a6e22e">elements</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">number</span>[]) =&gt; {
+                <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">index</span> <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>) {
+                  <span style="color:#66d9ef">return</span> (<span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">elements</span>[<span style="color:#a6e22e">index</span>] <span style="color:#f92672">-</span> <span style="color:#a6e22e">elements</span>[<span style="color:#a6e22e">index</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>]);
+                }
+              })
+          ),
+          <span style="color:#a6e22e">label</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;Poland Deaths&#39;</span>
+        },
+        {
+          <span style="color:#a6e22e">data</span><span style="color:#f92672">:</span> [].<span style="color:#a6e22e">concat</span>.<span style="color:#a6e22e">apply</span>(
+            [],
+            <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">allData</span>
+              .<span style="color:#a6e22e">filter</span>(<span style="color:#a6e22e">x</span> =&gt; <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">country</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;Poland&#39;</span>)
+              .<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">x</span> =&gt; <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">recovered</span>)
+              .<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">value</span>, <span style="color:#a6e22e">index</span>, <span style="color:#a6e22e">elements</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">number</span>[]) =&gt; {
+                <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">index</span> <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>) {
+                  <span style="color:#66d9ef">return</span> (<span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">elements</span>[<span style="color:#a6e22e">index</span>] <span style="color:#f92672">-</span> <span style="color:#a6e22e">elements</span>[<span style="color:#a6e22e">index</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>]);
+                }
+              })
+          ),
+          <span style="color:#a6e22e">label</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;Poland recoverd&#39;</span>
+        },
+        {
+          <span style="color:#a6e22e">data</span><span style="color:#f92672">:</span> [].<span style="color:#a6e22e">concat</span>.<span style="color:#a6e22e">apply</span>(
+            [],
+            <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">allData</span>
+              .<span style="color:#a6e22e">filter</span>(<span style="color:#a6e22e">x</span> =&gt; <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">country</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;Poland&#39;</span>)
+              .<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">x</span> =&gt; <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">confirmed</span>)
+              .<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">value</span>, <span style="color:#a6e22e">index</span>, <span style="color:#a6e22e">elements</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">number</span>[]) =&gt; {
+                <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">index</span> <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>) {
+                  <span style="color:#66d9ef">return</span> (<span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">elements</span>[<span style="color:#a6e22e">index</span>] <span style="color:#f92672">-</span> <span style="color:#a6e22e">elements</span>[<span style="color:#a6e22e">index</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>]);
+                }
+              })
+          ),
+          <span style="color:#a6e22e">label</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;Poland confirmed&#39;</span>
+        }
+      ];
+    });
+  }
+}
+
+</code></pre></div><p>Plik Module</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">CountriesAggregatedChartComponent</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;./countries-aggregated-chart.component&#39;</span>;
+<span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">ChartsModule</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;ng2-charts&#39;</span>;
+<span style="color:#66d9ef">import</span> {<span style="color:#a6e22e">MatSelectModule</span>} <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;@angular/material/select&#39;</span>; 
+<span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">SharedModule</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;src/app/shared/shared.module&#39;</span>;
+
+
+<span style="color:#960050;background-color:#1e0010">@</span><span style="color:#a6e22e">NgModule</span>({
+  <span style="color:#a6e22e">declarations</span><span style="color:#f92672">:</span> [<span style="color:#a6e22e">CountriesAggregatedChartComponent</span>],
+  <span style="color:#a6e22e">imports</span><span style="color:#f92672">:</span> [
+    <span style="color:#a6e22e">CommonModule</span>,
+    <span style="color:#a6e22e">ChartsModule</span>,
+    <span style="color:#a6e22e">MatSelectModule</span>,
+    <span style="color:#a6e22e">SharedModule</span>
+  ],
+  <span style="color:#a6e22e">exports</span><span style="color:#f92672">:</span> [
+    <span style="color:#a6e22e">CountriesAggregatedChartComponent</span>
+  ]
+})
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CountriesAggregatedChartModule</span> { }
+</code></pre></div><p>Pliki Css</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-css" data-lang="css">.<span style="color:#a6e22e">container</span> {
+    <span style="color:#66d9ef">display</span>: <span style="color:#66d9ef">flex</span>;
+    <span style="color:#66d9ef">justify-content</span>: <span style="color:#66d9ef">center</span>;
+}
+
+.<span style="color:#a6e22e">container__item</span>{
+    <span style="color:#66d9ef">padding</span>: <span style="color:#ae81ff">1</span><span style="color:#66d9ef">rem</span>;
+    <span style="color:#66d9ef">text-align</span>: <span style="color:#66d9ef">center</span>;
+    <span style="color:#66d9ef">font-size</span>: <span style="color:#ae81ff">20</span><span style="color:#66d9ef">px</span>
+}
+.<span style="color:#a6e22e">container__content-recovered</span> {
+    <span style="color:#66d9ef">color</span>: <span style="color:#66d9ef">green</span>;
+}
+
+.<span style="color:#a6e22e">container__content-deaths</span> {
+    <span style="color:#66d9ef">color</span>: <span style="color:#66d9ef">red</span>;
+}
+</code></pre></div><h4 id="komponent-country-picker">Komponent Country-picker</h4>
+<p>Plik Html</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;container&#34;</span>&gt;
+  &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;container__item&#34;</span> <span style="color:#a6e22e">style</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;justify-content: center&#34;</span>&gt;
+    &lt;<span style="color:#f92672">mat-form-field</span>&gt;
+      &lt;<span style="color:#f92672">mat-label</span>&gt;Select country&lt;/<span style="color:#f92672">mat-label</span>&gt;
+      &lt;<span style="color:#f92672">mat-select</span>
+        <span style="color:#960050;background-color:#1e0010">[(</span><span style="color:#a6e22e">value</span><span style="color:#960050;background-color:#1e0010">)]=&#34;</span><span style="color:#a6e22e">selected</span><span style="color:#960050;background-color:#1e0010">&#34;</span>
+        <span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">selectionChange</span><span style="color:#960050;background-color:#1e0010">)=&#34;</span><span style="color:#a6e22e">countryHasChanged</span><span style="color:#960050;background-color:#1e0010">($</span><span style="color:#a6e22e">event</span><span style="color:#960050;background-color:#1e0010">)&#34;</span>
+      &gt;
+        &lt;<span style="color:#f92672">mat-option</span>&gt;None&lt;/<span style="color:#f92672">mat-option</span>&gt;
+        &lt;<span style="color:#f92672">mat-option</span> <span style="color:#960050;background-color:#1e0010">*</span><span style="color:#a6e22e">ngFor</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;let country of countryList&#34;</span> <span style="color:#960050;background-color:#1e0010">[</span><span style="color:#a6e22e">value</span><span style="color:#960050;background-color:#1e0010">]=&#34;</span><span style="color:#a6e22e">country</span><span style="color:#960050;background-color:#1e0010">&#34;</span>&gt;{{
+          country
+        }}&lt;/<span style="color:#f92672">mat-option</span>&gt;
+      &lt;/<span style="color:#f92672">mat-select</span>&gt;
+    &lt;/<span style="color:#f92672">mat-form-field</span>&gt;
+  &lt;/<span style="color:#f92672">div</span>&gt;
+&lt;/<span style="color:#f92672">div</span>&gt;
+</code></pre></div><p>Plik TypeScipt</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#960050;background-color:#1e0010">@</span><span style="color:#a6e22e">Component</span>({
+  <span style="color:#a6e22e">selector</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;app-country-picker&#39;</span>,
+  <span style="color:#a6e22e">templateUrl</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;./country-picker.component.html&#39;</span>,
+  <span style="color:#a6e22e">styleUrls</span><span style="color:#f92672">:</span> [<span style="color:#e6db74">&#39;./country-picker.component.css&#39;</span>]
+})
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CountryPickerComponent</span> <span style="color:#66d9ef">implements</span> <span style="color:#a6e22e">OnInit</span> {
+  <span style="color:#960050;background-color:#1e0010">@</span><span style="color:#a6e22e">Output</span>() <span style="color:#a6e22e">onCountryChanged</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">EventEmitter</span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">string</span><span style="color:#f92672">&gt;</span>();
+  <span style="color:#960050;background-color:#1e0010">@</span><span style="color:#a6e22e">Input</span>() <span style="color:#a6e22e">countryList</span><span style="color:#f92672">:</span> Array<span style="color:#f92672">&lt;</span><span style="color:#a6e22e">string</span><span style="color:#f92672">&gt;</span>;
+
+  <span style="color:#a6e22e">selected</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">string</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Poland&#34;</span>;
+
+  <span style="color:#a6e22e">constructor</span>() {}
+
+  <span style="color:#a6e22e">ngOnInit</span>()<span style="color:#f92672">:</span> <span style="color:#66d9ef">void</span> {}
+
+  <span style="color:#a6e22e">countryHasChanged</span>(<span style="color:#a6e22e">$event</span>) {
+    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">onCountryChanged</span>.<span style="color:#a6e22e">emit</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">selected</span>);
+  }
+}
+</code></pre></div><p>Plik Css</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-css" data-lang="css">.<span style="color:#a6e22e">container</span> {
+    <span style="color:#66d9ef">display</span>: <span style="color:#66d9ef">flex</span>;
+    <span style="color:#66d9ef">justify-content</span>: <span style="color:#66d9ef">center</span>;
+}
+
+.<span style="color:#a6e22e">container__item</span>{
+    <span style="color:#66d9ef">padding</span>: <span style="color:#ae81ff">1</span><span style="color:#66d9ef">rem</span>;
+    <span style="color:#66d9ef">text-align</span>: <span style="color:#66d9ef">center</span>;
+    <span style="color:#66d9ef">font-size</span>: <span style="color:#ae81ff">20</span><span style="color:#66d9ef">px</span>
+}
+</code></pre></div><p>Module Shared</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">CountryPickerComponent</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;./component/country-picker/country-picker.component&#39;</span>;
+<span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">MatSelectModule</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;@angular/material/select&#39;</span>;
+
+
+
+<span style="color:#960050;background-color:#1e0010">@</span><span style="color:#a6e22e">NgModule</span>({
+  <span style="color:#a6e22e">declarations</span><span style="color:#f92672">:</span> [<span style="color:#a6e22e">CountryPickerComponent</span>],
+  <span style="color:#a6e22e">imports</span><span style="color:#f92672">:</span> [
+    <span style="color:#a6e22e">CommonModule</span>,
+    <span style="color:#a6e22e">MatSelectModule</span>
+  ],
+  <span style="color:#a6e22e">exports</span><span style="color:#f92672">:</span> [<span style="color:#a6e22e">CountryPickerComponent</span>]
+})
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SharedModule</span> { }
+
+</code></pre></div><p>Ostatnim korkiem jest zastąpienie zawartości pliku <strong>app.component.html</strong> na:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">app-countries-aggregated-chart</span>&gt;&lt;/<span style="color:#f92672">app-countries-aggregated-chart</span>&gt;
+
+</code></pre></div><p>Oraz dodanie odpowiednych importów do <strong>app.module.ts</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#960050;background-color:#1e0010">@</span><span style="color:#a6e22e">NgModule</span>({
+  <span style="color:#a6e22e">declarations</span><span style="color:#f92672">:</span> [
+    <span style="color:#a6e22e">AppComponent</span>
+  ],
+  <span style="color:#a6e22e">imports</span><span style="color:#f92672">:</span> [
+    <span style="color:#a6e22e">BrowserModule</span>,
+    <span style="color:#a6e22e">AppRoutingModule</span>,
+    <span style="color:#a6e22e">BrowserAnimationsModule</span>,
+    <span style="color:#a6e22e">TopMenuModule</span>,
+    <span style="color:#a6e22e">HttpClientModule</span>,
+    <span style="color:#a6e22e">CountriesAggregatedChartModule</span>
+  ],
+  <span style="color:#a6e22e">providers</span><span style="color:#f92672">:</span> [],
+  <span style="color:#a6e22e">bootstrap</span><span style="color:#f92672">:</span> [<span style="color:#a6e22e">AppComponent</span>]
+})
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AppModule</span> { }
+
+</code></pre></div><h2 id="przyszłe-usprawnienia">Przyszłe usprawnienia</h2>
+<ol>
+<li>Dodanie kolejnych komponentów (routy z lazy loading),</li>
+<li>Poprawki w <strong>countries-aggregated-chart.component</strong>,</li>
+<li>Dodanie plików enviroment,</li>
+<li>Dodanie mapowania interfejs -&gt; klasa w <strong>covid-19.service</strong>, pozwoli to na odzielenie modelu z api od modelu aplikacji klienckij.</li>
+</ol>
+</div>
             </div>
         </div>
 
